@@ -699,21 +699,40 @@
      "COMING SOON" STORE BADGES -> early access page
      The App Store / Google Play badges are not live yet, so pressing
      one takes people to /access to join the waitlist.
+     Uses event delegation, so it works no matter when the badges are
+     rendered, and matches by class OR by the words "coming soon".
      ============================================================ */
   (function soonBadgesGoToAccess() {
     var ACCESS_URL = '/access';
-    document.querySelectorAll('.store.is-soon').forEach(function (el) {
-      if (el.tagName === 'A') {
-        el.setAttribute('href', ACCESS_URL);          // real link: works with middle-click / open in new tab
-      } else {
-        el.setAttribute('role', 'link');              // div / span: behave like a link
-        el.setAttribute('tabindex', '0');
-        el.addEventListener('click', function () { location.href = ACCESS_URL; });
-        el.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = ACCESS_URL; }
-        });
-      }
+
+    function soonBadge(node) {
+      var el = node && node.closest ? node.closest('.store, .is-soon, [data-soon]') : null;
+      if (!el) return null;
+      if (el.classList.contains('is-soon') || el.hasAttribute('data-soon')) return el;
+      return /coming\s*soon/i.test(el.textContent || '') ? el : null;
+    }
+
+    // make them look + behave like links (keyboard, tooltip, pointer)
+    document.querySelectorAll('.store').forEach(function (el) {
+      if (!soonBadge(el)) return;
+      el.classList.add('is-soon');
+      if (el.tagName === 'A') el.setAttribute('href', ACCESS_URL);
+      else { el.setAttribute('role', 'link'); el.setAttribute('tabindex', '0'); }
       el.setAttribute('title', 'Coming soon: join early access');
+    });
+
+    document.addEventListener('click', function (e) {
+      var el = soonBadge(e.target);
+      if (!el) return;
+      e.preventDefault();
+      location.href = ACCESS_URL;
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var el = soonBadge(e.target);
+      if (!el || el.tagName === 'A') return;
+      e.preventDefault();
+      location.href = ACCESS_URL;
     });
   })();
 

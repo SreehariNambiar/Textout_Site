@@ -393,7 +393,7 @@
         // the side bars from `contain` blend in instead of looking empty.
         bg: '#f6e6d8', fg: '#ff4d79',
         border: 'rgba(255,77,121,.65)', glow: 'rgba(255,77,121,.55)',
-        img: 'url("assets/chatter-birthday.jpg")',
+        img: 'url("assets/chatter-birthday.png")',
         imgOpacity: 1,
         imgSize: 'contain', imgPos: 'center',
         scrim: '#fff5e6', scrimOpacity: 0.30,

@@ -551,7 +551,10 @@
 .ea-intro h1 { max-width: 1040px; }
 .ea-intro .lead { max-width: 820px; margin-left: auto; margin-right: auto; }
 .ea-intro .ea-count { justify-content: center; margin-bottom: 0; }
-.ea-showcase { padding: 32px 0 10px; }
+/* Bottom padding gives the tilted chatter, the phone and their glow/shadow room.
+   .ea-showcase clips overflow, so with only 10px here the bottom of the chatter
+   was being cut off. */
+.ea-showcase { padding: 32px 0 72px; }
 
 /* ============ FORM ROW (bottom) ============ */
 .ea-signup { padding: 40px 0 64px; background: var(--bg); }
@@ -582,7 +585,7 @@
 
 @media (max-width: 560px) {
   .ea-intro { padding: 36px 0 0; }
-  .ea-showcase { padding: 20px 0 6px; }
+  .ea-showcase { padding: 20px 0 48px; }
   .ea-perks-section { padding: 34px 0 30px; }
   .ea-signup { padding: 32px 0 48px; }
 }

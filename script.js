@@ -695,4 +695,26 @@
     }, { passive: true });
   })();
 
+  /* ============================================================
+     "COMING SOON" STORE BADGES -> early access page
+     The App Store / Google Play badges are not live yet, so pressing
+     one takes people to /access to join the waitlist.
+     ============================================================ */
+  (function soonBadgesGoToAccess() {
+    var ACCESS_URL = '/access';
+    document.querySelectorAll('.store.is-soon').forEach(function (el) {
+      if (el.tagName === 'A') {
+        el.setAttribute('href', ACCESS_URL);          // real link: works with middle-click / open in new tab
+      } else {
+        el.setAttribute('role', 'link');              // div / span: behave like a link
+        el.setAttribute('tabindex', '0');
+        el.addEventListener('click', function () { location.href = ACCESS_URL; });
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = ACCESS_URL; }
+        });
+      }
+      el.setAttribute('title', 'Coming soon: join early access');
+    });
+  })();
+
 })();

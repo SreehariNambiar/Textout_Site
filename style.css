@@ -248,9 +248,9 @@ a   { color: inherit; text-decoration: none; }
 .store small  { font-size: .68rem; opacity: .75; letter-spacing: .3px; }
 .store strong { font-size: .98rem; font-weight: 700; }
 
-/* "Coming soon" store badges: not links yet, so no hover lift */
-.store.is-soon { cursor: default; }
-.store.is-soon:hover { transform: none; box-shadow: var(--raised-sm); }
+/* "Coming soon" store badges: pressing one goes to the early access page (see script.js) */
+.store.is-soon { cursor: pointer; }
+.store.is-soon:focus-visible { outline: 3px solid #4d63ff; outline-offset: 3px; }
 .store.is-soon small { color: var(--accent); opacity: 1; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; }
 
 .hero-visual {

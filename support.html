@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support | Textout:)</title>
+<meta name="description" content="Get help with Textout:). Contact us, report content, or delete your account.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="assets/owl.png">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="contact.css">
+<script src="script.js" defer></script>
+<script src="contact.js" defer></script>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html">
+      <img class="brand-owl" src="assets/owl.png" alt="">
+      <img class="brand-logo" src="assets/logo.png" alt="Textout:)">
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="index.html#features">Features</a>
+      <a href="early-access.html" class="nav-early">Early access</a>
+      <a href="support.html" class="active">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="early-access.html">Get the app</a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="doc">
+  <div class="wrap doc-wrap">
+
+    <header class="doc-head reveal">
+      <span class="eyebrow">Help centre</span>
+      <h1>Support</h1>
+      <p class="doc-updated">We're here to help — usually within 24 hours.</p>
+    </header>
+
+    <div class="doc-box reveal" style="--d:.06s" id="contact">
+      <h2>Contact us</h2>
+      <p>Email <a href="mailto:pixeleratech@gmail.com">pixeleratech@gmail.com</a>, or send us a message with the form below. Tell us what happened, and attach screenshots by email if you can. It helps us fix things faster.</p>
+    </div>
+
+    <!-- ============ CONTACT FORM (saves to Supabase) ============ -->
+    <form class="ct-card reveal" id="ctForm" style="--d:.08s" novalidate>
+
+      <fieldset class="ct-topics">
+        <legend>What is this about?</legend>
+        <label class="ct-chip">
+          <input type="radio" name="topic" value="question" checked>
+          <span>Question</span>
+        </label>
+        <label class="ct-chip">
+          <input type="radio" name="topic" value="problem">
+          <span>Problem</span>
+        </label>
+        <label class="ct-chip">
+          <input type="radio" name="topic" value="feedback">
+          <span>Feedback</span>
+        </label>
+        <label class="ct-chip">
+          <input type="radio" name="topic" value="partnership">
+          <span>Partnership</span>
+        </label>
+        <label class="ct-chip">
+          <input type="radio" name="topic" value="other">
+          <span>Other</span>
+        </label>
+      </fieldset>
+
+      <div class="ct-grid">
+        <div class="ct-field">
+          <label for="ctName">Your name</label>
+          <input id="ctName" name="name" type="text" autocomplete="name" placeholder="Your name" maxlength="100" required>
+        </div>
+        <div class="ct-field">
+          <label for="ctEmail">Email address</label>
+          <input id="ctEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required>
+        </div>
+      </div>
+
+      <div class="ct-field">
+        <label for="ctMessage">Message</label>
+        <textarea id="ctMessage" name="message" rows="6" maxlength="2000" placeholder="Tell us what happened or what you'd like to ask." required></textarea>
+        <span class="ct-count" id="ctCount" aria-hidden="true">0 / 2000</span>
+      </div>
+
+      <!-- honeypot: real people never see or fill this -->
+      <input class="ct-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <button class="btn btn-primary ct-submit" id="ctSubmit" type="submit">Send message</button>
+
+      <p class="ct-msg" id="ctMsg" role="status" aria-live="polite"></p>
+      <p class="fine ct-fine">We only use your email to reply to you. To report content or delete your account, see the sections below.</p>
+    </form>
+
+    <!-- shown after a successful send -->
+    <div class="ct-done" id="ctDone" hidden tabindex="-1">
+      <span class="ct-done__badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12.5 10 17.5 19 7.5"/></svg>
+      </span>
+      <h2 id="ctDoneTitle">Message sent</h2>
+      <p id="ctDoneText">Thanks for getting in touch. We'll reply by email.</p>
+      <a class="btn btn-sm" href="index.html">Back to home</a>
+    </div>
+
+    <section class="doc-section reveal">
+      <h2>Report content or a user</h2>
+      <p>Every chatter, comment and profile can be reported inside the app. Tap the <strong>⋯</strong> options and choose <strong>Report</strong>. Reported content may be hidden while our team reviews it, and we remove content that breaks our rules. You can also <strong>Block</strong> a user from their profile. If you can't use the app, email us with the details.</p>
+      <p>To report child safety concerns, email <a href="mailto:pixeleratech@gmail.com">pixeleratech@gmail.com</a> straight away.</p>
+    </section>
+
+    <section class="doc-section reveal">
+      <h2>Delete your account</h2>
+
+      <div class="doc-box">
+        <p><strong>In the app</strong><br>Open <strong>Settings</strong>, scroll to the bottom and tap <strong>Delete Account</strong>. Your account and data are deleted immediately.</p>
+      </div>
+
+      <div class="doc-box">
+        <p><strong>Without the app</strong><br>Email <a href="mailto:pixeleratech@gmail.com?subject=Account%20Deletion%20Request">pixeleratech@gmail.com</a> from the address linked to your account with the subject &ldquo;Account Deletion Request&rdquo;. We process requests within 30 days.</p>
+      </div>
+    </section>
+
+    <section class="doc-section reveal">
+      <h2>Frequently asked questions</h2>
+
+      <div class="faq">
+
+        <details class="faq-item">
+          <summary><span>What is a chatter?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>A post that feels like a message. Share it with everyone, your friends, a hangout, an event or a community. It's as easy as chatting, but it stays out there for people to see. You can style it with colors, images and special themes.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>What is an Instant?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>A raw, unedited moment from your day. Take a photo or video with a swipe, tap and post. Nothing gets edited, so what you share is what you saw.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>What is Resonance?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>A way to respond to a chatter without a crowded comment section. Every resonance stands on its own, so there are no endless reply chains and no pile-ons. Each resonance is seen only by you, and you can choose to reply to the ones you get.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>What is Discover?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>A calm, simple feed to find what's happening around you. See what people are talking about with #trending, find people who share your interests in hangouts, and find events and communities nearby.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>What is a hangout?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>A temporary space for people who share an interest.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>What is an event?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>A real-life get-together. Create an event with a time and place, send invites in seconds, and share updates and photos while it happens.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>What is a community?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>A home for your people. Communities are one of the places you can host and share a chatter.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>Do events disappear?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>Yes. When an event is over, it disappears. There's no clutter, just the memories.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span>Is Textout:) free?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+          <p>Yes, Textout:) is free to download on iOS and Android. It's coming soon to the App Store and Google Play. Join early access to hear when it opens.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="doc-section reveal">
+      <h2>Legal</h2>
+      <p>Read our <a href="privacy.html">Privacy Policy</a> and <a href="privacy.html#terms">Terms &amp; Conditions</a>.</p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <!-- ============ KINETIC RIBBON (top of the footer) ============ -->
+  <div class="ribbon" aria-hidden="true">
+    <div class="ribbon-mask">
+      <div class="ribbon-track">
+        <div class="ribbon-row">
+          <span class="ribbon-item ribbon-item--accent">Textout:)</span>
+          <span class="ribbon-sep"></span>
+          <span class="ribbon-item">Events</span>
+          <span class="ribbon-sep"></span>
+          <span class="ribbon-item">Hangouts</span>
+          <span class="ribbon-sep"></span>
+          <span class="ribbon-item">#Trending</span>
+          <span class="ribbon-sep"></span>
+          <span class="ribbon-item">Communities</span>
+          <span class="ribbon-sep"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <img class="footer-owl" src="assets/owl.png" alt="">
+      <img class="footer-logo" src="assets/logo.png" alt="Textout:)">
+      <p>Share life. Simply.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="early-access.html">Early access</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="privacy.html#terms">Terms</a>
+    </div>
+  </div>
+  <div class="wrap footer-base">
+    <span>&copy; 2026 Pixelera Technologies LLP · Textout:)</span>
+    <span>Made for real connection.</span>
+  </div>
+  <div class="footer-word" aria-hidden="true">Textout:)</div>
+</footer>
+
+</body>
+</html>

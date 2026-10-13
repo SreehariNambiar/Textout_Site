@@ -1,0 +1,90 @@
+/* ============================================================
+   Textout:) — Contact page
+   Loads after style.css and reuses its tokens.
+   ============================================================ */
+
+.ct-card {
+  padding: 30px 28px; border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--raised);
+  margin-bottom: 16px;
+}
+
+/* ---- topic chips ---- */
+.ct-topics { border: 0; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.ct-topics legend { font-size: .95rem; font-weight: 700; margin-bottom: 12px; padding: 0; float: left; width: 100%; }
+.ct-chip { position: relative; display: block; cursor: pointer; }
+.ct-chip input { position: absolute; inset: 0; z-index: 2; opacity: 0; cursor: pointer; margin: 0; }
+.ct-chip span {
+  display: block; padding: 10px 18px; border-radius: 999px;
+  background: var(--surface); color: var(--muted);
+  font-size: .9rem; font-weight: 600;
+  box-shadow: var(--raised-sm);
+  transition: transform .2s var(--ease), color .2s, box-shadow .25s var(--ease), background .25s var(--ease);
+}
+.ct-chip:hover span { transform: translateY(-2px); color: #fff; }
+.ct-chip input:checked + span {
+  color: #fff; font-weight: 800; transform: none;
+  background: linear-gradient(180deg, rgba(255, 122, 26, .2), rgba(255, 122, 26, .05)), #0a0a0c;
+  box-shadow: var(--inset), 0 0 0 1px rgba(255, 122, 26, .65), 0 0 22px rgba(255, 122, 26, .25);
+}
+.ct-chip input:focus-visible + span { outline: 3px solid #4d63ff; outline-offset: 3px; }
+
+/* ---- fields ---- */
+.ct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.ct-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.ct-field label { font-size: .95rem; font-weight: 700; }
+.ct-field input,
+.ct-field textarea {
+  width: 100%; padding: 16px 20px; border-radius: 999px; border: 0;
+  background: #08080a; color: #fff; font: inherit; font-size: 1rem;
+  box-shadow: var(--inset), 0 0 0 1.5px rgba(255, 255, 255, .32);
+  transition: box-shadow .2s;
+}
+.ct-field textarea { border-radius: 24px; resize: vertical; min-height: 150px; line-height: 1.5; }
+.ct-field input:hover:not(:focus):not([aria-invalid="true"]),
+.ct-field textarea:hover:not(:focus):not([aria-invalid="true"]) { box-shadow: var(--inset), 0 0 0 1.5px rgba(255, 255, 255, .5); }
+.ct-field ::placeholder { color: rgba(169, 169, 184, .6); }
+.ct-field input:focus,
+.ct-field textarea:focus { outline: none; box-shadow: var(--inset), 0 0 0 2px #4d63ff, 0 0 22px rgba(77, 99, 255, .4); }
+.ct-field [aria-invalid="true"] { box-shadow: var(--inset), 0 0 0 2px #ff6b6b; }
+.ct-count { align-self: flex-end; font-size: .8rem; color: var(--muted); margin-top: -2px; }
+
+.ct-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.ct-submit { width: 100%; padding: 16px 30px; font-size: 1.02rem; margin-top: 4px; }
+.ct-submit:disabled { opacity: .6; cursor: progress; transform: none; }
+
+.ct-msg { min-height: 1.4em; margin: 12px 4px 0; font-size: .92rem; color: #ff9a9a; }
+.ct-msg.is-ok { color: #8be0a4; }
+.ct-fine { margin-top: 6px; }
+
+/* ---- success ---- */
+.ct-done {
+  padding: 34px 28px; border-radius: var(--radius); margin-bottom: 16px;
+  background: var(--surface); text-align: center;
+  box-shadow: var(--raised), 0 0 0 1px rgba(255, 122, 26, .3);
+}
+.ct-done[hidden] { display: none; }
+.ct-done:focus { outline: none; }
+.ct-done__badge {
+  display: grid; place-items: center;
+  width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 16px;
+  background: var(--accent); color: #140a04;
+  box-shadow: 0 0 24px rgba(255, 122, 26, .6);
+}
+.ct-done__badge svg { width: 24px; height: 24px; }
+.ct-done h2 { font-size: 1.5rem; letter-spacing: -.4px; margin-bottom: 8px; }
+.ct-done p { margin-bottom: 20px; }
+.doc .ct-done .btn { text-decoration: none; }
+.js .ct-done:not([hidden]) { animation: ct-pop .5s cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes ct-pop { from { opacity: 0; transform: scale(.94) translateY(8px); } }
+
+@media (max-width: 600px) {
+  .ct-card { padding: 24px 20px; }
+  .ct-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .ct-done:not([hidden]) { animation: none; }
+  .ct-chip span, .ct-field input, .ct-field textarea { transition: none; }
+}

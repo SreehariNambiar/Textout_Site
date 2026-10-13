@@ -1,0 +1,86 @@
+/* ============================================================
+   Textout:) — Privacy & Terms page
+   Loads after style.css and reuses its tokens (.doc, .doc-box, etc.).
+   ============================================================ */
+
+.doc-wrap { max-width: 820px; }
+
+/* ---- jump tabs ---- */
+.legal-tabs {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin: 0 0 8px;
+}
+.legal-tabs a {
+  display: block; padding: 10px 18px; border-radius: 999px;
+  background: var(--surface); color: var(--muted);
+  font-size: .9rem; font-weight: 600; text-decoration: none;
+  box-shadow: var(--raised-sm);
+  transition: transform .2s var(--ease), color .2s, box-shadow .25s var(--ease), background .25s var(--ease);
+}
+.doc .legal-tabs a { color: var(--muted); text-decoration: none; }
+.legal-tabs a:hover { transform: translateY(-2px); color: #fff; }
+.doc .legal-tabs a:hover { color: #fff; }
+.legal-tabs a.is-active,
+.doc .legal-tabs a.is-active {
+  color: #fff; font-weight: 800; transform: none;
+  background: linear-gradient(180deg, rgba(255, 122, 26, .2), rgba(255, 122, 26, .05)), #0a0a0c;
+  box-shadow: var(--inset), 0 0 0 1px rgba(255, 122, 26, .65), 0 0 22px rgba(255, 122, 26, .25);
+}
+.legal-tabs a:focus-visible { outline: 3px solid #4d63ff; outline-offset: 3px; }
+
+/* ---- sections ---- */
+.legal { margin-top: 54px; scroll-margin-top: 96px; }
+.legal-title {
+  font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+  font-weight: 900; letter-spacing: -.8px;
+  color: #fff; text-shadow: 0 0 30px var(--glow);
+  margin-bottom: 6px;
+}
+.legal-date { display: block; color: var(--muted); font-size: .88rem; margin-bottom: 24px; }
+
+.legal h3 {
+  font-size: 1.12rem; font-weight: 800; letter-spacing: -.2px;
+  color: #fff;
+  margin: 34px 0 12px; padding-left: 14px;
+  border-left: 3px solid var(--accent);
+  text-shadow: 0 0 18px rgba(0, 16, 155, .5);
+  scroll-margin-top: 96px;
+}
+
+/* ---- lists (style.css resets margins, so build them here) ---- */
+.legal ul, .legal ol { list-style: none; margin: 8px 0 18px; padding: 0; }
+.legal ul li, .legal ol li {
+  position: relative;
+  padding: 6px 0 6px 30px;
+  color: #cfd1dd; font-size: 1rem; line-height: 1.6;
+}
+.legal ul li strong, .legal ol li strong { color: #fff; }
+.legal ul li::before {
+  content: "";
+  position: absolute; left: 6px; top: 16px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 12px #2c3dff, 0 0 4px var(--glow);
+}
+.legal ol { counter-reset: legal-step; }
+.legal ol li { counter-increment: legal-step; }
+.legal ol li::before {
+  content: counter(legal-step);
+  position: absolute; left: 0; top: 7px;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: .75rem; font-weight: 800; color: #fff;
+  background: var(--surface);
+  box-shadow: var(--inset), 0 0 0 1px rgba(255, 122, 26, .4);
+}
+
+/* ---- boxes & buttons ---- */
+.legal .doc-box { margin: 14px 0; }
+.legal .legal-contact p { margin-bottom: 4px; }
+.doc .legal-btn { text-decoration: none; color: #fff; margin-top: 14px; }
+.doc .legal-btn:hover { color: #fff; }
+
+@media (max-width: 720px) {
+  .legal { margin-top: 42px; }
+  .legal-tabs a { padding: 9px 15px; font-size: .86rem; }
+}

@@ -1,0 +1,333 @@
+/* ============================================================
+   Textout:) — Navigation bar (STYLES)
+   ------------------------------------------------------------
+   Loads AFTER /style.css on every page:
+
+       <link rel="stylesheet" href="/style.css">
+       <link rel="stylesheet" href="/nav.css">
+
+   File map:
+     1. Shell
+     2. Desktop links         (> 900px)
+     3. Early-access highlight
+     4. ▸▸▸ MOBILE NAV        (<= 900px)     ← edit for phones
+     5. Reduced motion
+   ============================================================ */
+
+/* ============ 1. SHELL ============ */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  padding: 14px 0; pointer-events: none;
+}
+
+.nav-inner {
+  pointer-events: auto;
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 10px 0 14px; gap: 18px;
+  border-radius: 999px;
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .035) 0%, rgba(255, 255, 255, 0) 45%),
+    var(--surface);
+
+  box-shadow:
+    6px 6px 16px #000,
+    -4px -4px 12px rgba(255, 255, 255, .04),
+    0 0 24px var(--glow-soft),
+    inset 0 1px 0 rgba(255, 255, 255, .09),
+    inset 0 -1px 0 rgba(0, 0, 0, .65),
+    0 0 0 1px rgba(255, 255, 255, .035);
+
+  transition: box-shadow .35s var(--ease), background .35s var(--ease);
+}
+
+.nav.scrolled .nav-inner {
+  box-shadow:
+    9px 9px 22px #000,
+    -6px -6px 16px rgba(255, 255, 255, .06),
+    0 0 34px var(--glow-soft),
+    inset 0 1px 0 rgba(255, 255, 255, .11),
+    inset 0 -1px 0 rgba(0, 0, 0, .65),
+    0 0 0 1px rgba(255, 255, 255, .045);
+}
+
+.brand { display: flex; align-items: center; gap: 12px; padding: 2px 4px 2px 2px; }
+.brand-owl {
+  height: 36px; width: 36px; object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(0, 187, 255, .45));
+}
+.brand-logo {
+  height: 22px; width: auto; opacity: .96;
+  filter: drop-shadow(0 0 10px var(--glow));
+}
+
+/* ============ 2. DESKTOP LINKS  (> 900px) ============ */
+.nav-links {
+  display: flex; gap: 2px; padding: 5px; border-radius: 999px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .55), rgba(0, 0, 0, .15)), #08080a;
+  box-shadow:
+    inset 2px 2px 6px #000,
+    inset -1px -1px 3px rgba(255, 255, 255, .035),
+    0 1px 0 rgba(255, 255, 255, .05);
+}
+.nav-links a {
+  position: relative;
+  padding: 8px 18px; border-radius: 999px;
+  font-size: .88rem; font-weight: 500; letter-spacing: .15px;
+  color: rgba(169, 169, 184, .82);
+  transition: color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+}
+.nav-links a:hover {
+  color: #fff;
+  background: linear-gradient(180deg, #1a1a20, #0f0f12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .08),
+    2px 2px 8px #000,
+    -1px -1px 4px rgba(255, 255, 255, .05),
+    0 0 16px rgba(0, 16, 155, .55);
+}
+.nav-links a.active {
+  color: #fff; font-weight: 800; letter-spacing: .05px;
+  background: linear-gradient(180deg, #050507 0%, #0d0d11 100%);
+  box-shadow:
+    inset 3px 3px 8px #000,
+    inset -2px -2px 6px rgba(255, 255, 255, .05),
+    inset 0 0 20px rgba(255, 122, 26, .16),
+    0 0 0 1px rgba(255, 122, 26, .32),
+    0 1px 0 rgba(255, 255, 255, .04);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+}
+.nav-links a.active::after {
+  content: "";
+  position: absolute; left: 50%; bottom: 4px;
+  transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent), 0 0 16px rgba(255, 122, 26, .6),
+              inset 0 -1px 1px rgba(0, 0, 0, .4);
+}
+
+/* nav CTA — .btn / .btn-primary live in style.css; this only
+   recolours the primary button when it sits inside the nav */
+.nav .btn-primary {
+  background:
+    linear-gradient(180deg, rgba(255, 122, 26, .22), rgba(255, 122, 26, .05)),
+    var(--surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .12),
+    5px 5px 12px #000,
+    -3px -3px 9px rgba(255, 255, 255, .05),
+    0 0 22px rgba(255, 122, 26, .35),
+    0 0 0 1px rgba(255, 122, 26, .45);
+}
+.nav .btn-primary:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .16),
+    7px 7px 16px #000,
+    -4px -4px 12px rgba(255, 255, 255, .06),
+    0 0 32px rgba(255, 122, 26, .5),
+    0 0 0 1px rgba(255, 122, 26, .6);
+}
+
+/* ============ 3. EARLY-ACCESS HIGHLIGHT ============ */
+.nav-links a.nav-early {
+  color: #fff; font-weight: 700;
+  padding-left: 30px;
+  background:
+    linear-gradient(180deg, rgba(255, 122, 26, .32), rgba(255, 122, 26, .1)),
+    #140a04;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .16),
+    0 0 0 1px rgba(255, 122, 26, .6),
+    0 0 20px rgba(255, 122, 26, .38);
+}
+.nav-links a.nav-early:hover {
+  background:
+    linear-gradient(180deg, rgba(255, 122, 26, .45), rgba(255, 122, 26, .16)),
+    #140a04;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .2),
+    0 0 0 1px rgba(255, 122, 26, .8),
+    0 0 28px rgba(255, 122, 26, .55);
+}
+.nav-links a.nav-early::before {
+  content: "";
+  position: absolute; left: 14px; top: 50%;
+  width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent), 0 0 14px rgba(255, 122, 26, .7);
+  animation: early-pulse 1.8s ease-in-out infinite;
+}
+.nav-links a.nav-early.active::after { display: none; }
+@keyframes early-pulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(.55); opacity: .55; }
+}
+
+/* tight desktop */
+@media (min-width: 901px) and (max-width: 1080px) {
+  .nav-inner { gap: 12px; }
+  .nav-links a { padding: 8px 13px; font-size: .85rem; }
+  .nav-links a.nav-early { padding-left: 28px; }
+}
+
+/* ============================================================
+   ▸▸▸  4. MOBILE NAV  ( <= 900px )  ◂◂◂
+   Everything about the phone / tablet nav lives here.
+   Edit only this block to redesign the mobile nav.
+   ============================================================ */
+
+.nav-toggle { display: none; }
+
+@media (max-width: 900px) {
+
+  /* --- shell -------------------------------------------------- */
+  .nav-inner { gap: 8px; }
+  .nav .btn-primary { margin-left: auto; }
+
+  /* --- burger button ----------------------------------------- */
+  .nav-toggle {
+    display: grid; place-items: center; flex: none;
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 0; padding: 0; margin: 0;
+    -webkit-appearance: none; appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    background: linear-gradient(145deg, #1a1a20 0%, #0d0d11 100%);
+    box-shadow:
+      6px 6px 14px #000,
+      -4px -4px 10px rgba(255, 255, 255, .06),
+      inset 0 1px 0 rgba(255, 255, 255, .1),
+      inset 0 -1px 0 rgba(0, 0, 0, .6);
+    transition: box-shadow .25s var(--ease), background .25s var(--ease), transform .15s;
+  }
+  .nav-toggle span {
+    grid-area: 1 / 1; display: block; width: 18px; height: 2px;
+    border-radius: 2px; background: #fff;
+    box-shadow: 0 0 6px rgba(255, 255, 255, .25);
+    transition: transform .28s var(--ease), opacity .2s;
+  }
+  .nav-toggle span:nth-child(1) { transform: translateY(-6px); }
+  .nav-toggle span:nth-child(3) { transform: translateY(6px); }
+  .nav.open .nav-toggle span:nth-child(1) { transform: rotate(45deg); }
+  .nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
+  .nav.open .nav-toggle span:nth-child(3) { transform: rotate(-45deg); }
+
+  .nav-toggle:active,
+  .nav.open .nav-toggle {
+    transform: none;
+    background: linear-gradient(145deg, #050507, #0d0d11);
+    box-shadow:
+      inset 4px 4px 9px #000,
+      inset -3px -3px 7px rgba(255, 255, 255, .05),
+      inset 0 0 14px rgba(255, 122, 26, .18),
+      0 0 0 1px rgba(255, 122, 26, .35);
+  }
+  .nav-toggle:focus { outline: none; }
+  .nav-toggle:focus-visible { outline: 3px solid #4d63ff; outline-offset: 3px; }
+
+  /* --- dropdown panel ---------------------------------------- */
+  .nav-links {
+    position: absolute; top: calc(100% + 12px); left: 0; right: 0;
+    flex-direction: column; gap: 3px; padding: 8px; border-radius: 26px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, 0) 45%),
+      var(--surface);
+    box-shadow:
+      8px 8px 22px #000,
+      -4px -4px 14px rgba(255, 255, 255, .045),
+      0 0 28px var(--glow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, .09),
+      0 0 0 1px rgba(255, 255, 255, .04);
+    opacity: 0; visibility: hidden; transform: translateY(-10px) scale(.98);
+    transform-origin: top right; pointer-events: none;
+    transition: opacity .22s var(--ease), transform .28s var(--ease), visibility 0s .28s;
+  }
+  .nav.open .nav-links {
+    opacity: 1; visibility: visible; transform: none; pointer-events: auto;
+    transition: opacity .22s var(--ease), transform .28s var(--ease), visibility 0s;
+  }
+
+  /* --- link rows --------------------------------------------- */
+  .nav-links a {
+    display: flex; align-items: center;
+    min-height: 48px; padding: 12px 18px; border-radius: 16px;
+    font-size: 1rem; font-weight: 600; letter-spacing: 0;
+    color: rgba(214, 214, 226, .86);
+  }
+  .nav-links a.active { color: #fff; font-weight: 700; }
+  .nav-links a.active::after {
+    display: block; left: auto; right: 18px; top: 50%; bottom: auto;
+    width: 6px; height: 6px; transform: translateY(-50%);
+  }
+  .nav-links a.nav-early {
+    padding: 12px 18px 12px 42px;
+    color: #fff; font-weight: 700;
+    background:
+      linear-gradient(180deg, rgba(255, 122, 26, .16), rgba(255, 122, 26, .05)),
+      #0d0806;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .08),
+      0 0 0 1px rgba(255, 122, 26, .4);
+  }
+  .nav-links a.nav-early::before { left: 20px; }
+  .nav-links a.nav-early.active::after { display: none; }
+
+  /* pressed state */
+  .nav-links a:not(.nav-early):active {
+    color: #fff;
+    background: linear-gradient(180deg, #050507, #0d0d11);
+    box-shadow: inset 2px 2px 6px #000, inset -1px -1px 3px rgba(255, 255, 255, .04);
+  }
+}
+
+/* hover only on real hover devices */
+@media (max-width: 900px) and (hover: hover) {
+  .nav-toggle:hover:not(:active) {
+    box-shadow:
+      8px 8px 18px #000,
+      -5px -5px 12px rgba(255, 255, 255, .07),
+      inset 0 1px 0 rgba(255, 255, 255, .12),
+      inset 0 -1px 0 rgba(0, 0, 0, .6);
+  }
+  .nav.open .nav-toggle:hover {
+    box-shadow:
+      inset 4px 4px 9px #000,
+      inset -3px -3px 7px rgba(255, 255, 255, .05),
+      inset 0 0 14px rgba(255, 122, 26, .18),
+      0 0 0 1px rgba(255, 122, 26, .35);
+  }
+}
+
+/* touch devices: don't stick :hover after a tap */
+@media (max-width: 900px) and (hover: none) {
+  .nav-links a:not(.active):not(.nav-early):hover {
+    color: rgba(214, 214, 226, .86); background: none; box-shadow: none;
+  }
+  .nav-links a.nav-early:hover {
+    background:
+      linear-gradient(180deg, rgba(255, 122, 26, .16), rgba(255, 122, 26, .05)),
+      #0d0806;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .08),
+      0 0 0 1px rgba(255, 122, 26, .4);
+  }
+  .nav-links a:not(.active):not(.nav-early):active {
+    color: #fff;
+    background: linear-gradient(180deg, #050507, #0d0d11);
+    box-shadow: inset 2px 2px 6px #000, inset -1px -1px 3px rgba(255, 255, 255, .04);
+  }
+}
+
+/* tiny phones: hide the nav CTA, keep the burger */
+@media (max-width: 420px) {
+  .nav .btn-sm { display: none; }
+  .nav-toggle { margin-left: auto; }
+}
+
+/* ============ 5. REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  .nav-links a.nav-early::before { animation: none; }
+  .nav-links, .nav.open .nav-links, .nav-toggle span { transition: none; }
+}

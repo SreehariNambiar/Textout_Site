@@ -524,9 +524,16 @@
 .ea-showcase {
   padding: 64px 0 28px;
   background: radial-gradient(760px 460px at 50% 38%, rgba(0, 16, 155, .5), transparent 62%), var(--bg);
-  overflow: clip;
+  overflow-x: clip;       /* still stop sideways spill (no horizontal scrollbar)... */
+  overflow-y: visible;    /* ...but never crop the tilted chatter / phone at the bottom */
 }
 .ea-showcase .ea-visual { width: min(100%, 560px); max-width: none; margin: 0 auto; }
+/* style.css (.hero-visual / .reveal) can clip its children; the tilted chatter and
+   phone poke out past the stage, so make sure nothing between here and the
+   section's own clip cuts them off. */
+.ea-showcase .wrap,
+.ea-showcase .ea-visual,
+.ea-showcase .ea-stage { overflow: visible; contain: none; clip-path: none; }
 
 .ea-stage  { display: block; container-type: inline-size; aspect-ratio: 100 / 131; }   /* not height: 131cqw, which on a container resolves against the viewport width and made the stage huge on desktop */
 .ea-poster {
@@ -535,7 +542,7 @@
 }
 .ea-row {
   position: absolute; z-index: 4;
-  left: 50%; bottom: 3cqw;
+  left: 50%; bottom: 7cqw;
   width: 620px; margin-left: -310px; padding: 0; gap: 0;
   display: flex; flex-direction: row-reverse; flex-wrap: nowrap;
   align-items: flex-end; justify-content: flex-start;
@@ -640,7 +647,7 @@
     transform: translate(-50%, -50%);
   }
   .ea-row {
-    width: 860px; margin-left: -430px; bottom: 0;
+    width: 860px; margin-left: -430px; bottom: 6cqw;
     flex-direction: row; justify-content: space-between;
   }
   .ea-row .ea-chatter { margin-left: 0; }

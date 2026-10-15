@@ -322,7 +322,7 @@
 
    > 700px : horizontal pill  (dot · Early access · →)
    <= 700px: slim vertical tab (dot on top, text reading top to
-             bottom, arrow at the bottom)
+             bottom, no arrow)
    ============================================================ */
 .early-float {
   position: fixed;
@@ -407,7 +407,7 @@
 
 /* Phones: slim vertical tab.
    Dot on top → "Early access" reading top to bottom (E at the top,
-   last s at the bottom) → arrow at the bottom. */
+   last s at the bottom). No arrow. */
 @media (max-width: 700px) {
   .early-float {
     box-sizing: border-box;
@@ -423,19 +423,13 @@
     writing-mode: vertical-rl;
     letter-spacing: .4px;
   }
-  .early-float__arrow { font-size: .95rem; line-height: 1; }
+  .early-float__arrow { display: none; }
   .early-float__dot { width: 7px; height: 7px; }
 
-  /* no widening on hover/tap — the tab stays slim */
+  /* no widening on hover/tap, the tab stays slim */
   .early-float:hover,
   .early-float:focus-visible { padding-right: 0; }
   .early-float:focus-visible { border-radius: 14px 0 0 14px; }
-
-  /* arrow nudges along the tab instead of sideways */
-  .early-float:hover .early-float__arrow,
-  .early-float:focus-visible .early-float__arrow {
-    transform: translateY(3px);
-  }
 }
 
 /* ============ 6. REDUCED MOTION ============ */

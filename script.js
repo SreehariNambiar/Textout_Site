@@ -109,12 +109,6 @@
     var cards = Array.prototype.slice.call(stage.querySelectorAll('.float-chatter'));
     if (cards.length === 0) return;
 
-    // Two slots, one on each side of the phone. Cards alternate sides and
-    // take turns in their slot (one per side visible at a time), so tall
-    // photo chatters never overlap each other. TURN must match the 18s
-    // cycle in style.css (3 cards per side x 6s).
-    // On wide screens the cards hang outside the phone; on narrow screens
-    // they sit inside the column (and are scaled down) so nothing is cut off.
     var WIDE   = [ { top: '0%', left: '-16%' }, { top: '6%', right: '-18%' } ];
     var NARROW = [ { top: '0%', left: '0%'   }, { top: '6%', right: '0%'   } ];
     var TURN = 6;
@@ -137,7 +131,6 @@
       card.classList.add(side === 0 ? 'is-left' : 'is-right');
 
       if (reduce) {
-        // No animation: show only the first card of each side.
         if (turn > 0) { card.style.display = 'none'; return; }
         card.style.opacity = '1';
         card.classList.add('is-in');
@@ -159,7 +152,7 @@
   (function scaleFloatingChatters() {
     var stages = Array.prototype.slice.call(document.querySelectorAll('.hero-visual, .resonance-stage'));
     if (!stages.length) return;
-    var DESIGN_W = 540;   // column width the cards were designed for
+    var DESIGN_W = 540;
 
     function fit(el) {
       var s = Math.max(0.46, Math.min(1, el.clientWidth / DESIGN_W));
@@ -223,7 +216,6 @@
     a.addEventListener('click', function () { setActive(a); });
   });
 
-  /* Home: smooth-scroll to the very top of the page */
   var homeLink = document.querySelector('.nav-links a[href="#home"]');
   if (homeLink) {
     homeLink.addEventListener('click', function (e) {
@@ -269,6 +261,55 @@
     })[0];
     if (initial) setActive(initial);
   }
+
+  /* ============================================================
+     FLOATING EARLY-ACCESS TAB
+     Shows the sticky right-edge tab when no .early-cta is on
+     screen AND the user has scrolled past the hero. Hides it
+     again when the hero or closing button scrolls into view.
+     Only activates on pages that contain an .early-cta.
+     ============================================================ */
+  (function floatingEarlyAccess() {
+    var floatEl = document.getElementById('earlyFloat');
+    if (!floatEl) return;
+
+    var sources = document.querySelectorAll('.early-cta');
+    if (!sources.length) {
+      // Page has no early-access source button — hide the tab entirely.
+      floatEl.remove();
+      return;
+    }
+
+    var visibleSources = new Set();
+    var SCROLL_THRESHOLD = 200;
+
+    function apply() {
+      var scrolled = window.scrollY > SCROLL_THRESHOLD;
+      var noneVisible = visibleSources.size === 0;
+      var show = scrolled && noneVisible;
+
+      floatEl.classList.toggle('is-visible', show);
+      floatEl.setAttribute('aria-hidden', show ? 'false' : 'true');
+      // Remove from tab order when hidden so keyboard users skip it.
+      if (show) floatEl.removeAttribute('tabindex');
+      else floatEl.setAttribute('tabindex', '-1');
+    }
+
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) visibleSources.add(e.target);
+          else visibleSources.delete(e.target);
+        });
+        apply();
+      }, { threshold: 0.4 });
+      sources.forEach(function (el) { obs.observe(el); });
+    }
+
+    window.addEventListener('scroll', apply, { passive: true });
+    window.addEventListener('resize', apply);
+    apply();
+  })();
 
   /* ============================================================
      LIVE CHATTER DEMO — cycler
@@ -349,14 +390,8 @@
 
     if (!avatar || !username || !audience || !message) return;
 
-    /* NOTE: `fg` (text colour) now matches the visible border colour of
-       each state. For custom states the visible border is the `glow`
-       colour (see .demo-chatter.is-custom in style.css), so `fg` is the
-       fully-opaque version of that colour. State 1 has a white border,
-       so its text is white. */
     var states = [
       {
-        // 1 — Ordinary post (white border → white text)
         bg: '#1c1c1e', fg: '#ffffff',
         border: 'rgba(255,255,255,.5)', glow: 'transparent',
         img: null, imgOpacity: 0,
@@ -370,7 +405,6 @@
         short: '2m', stamp: 'Oct 12, 2026 at 2:42 PM',
       },
       {
-        // Taj Mahal — chatter WITH a photo
         bg: '#3a2a12', fg: '#ffb347',
         border: 'rgba(255,179,71,.65)', glow: 'rgba(255,179,71,.55)',
         img: null, imgOpacity: 0,
@@ -385,12 +419,6 @@
         short: '4m', stamp: 'Oct 12, 2026 at 2:38 PM',
       },
       {
-        // 2 — BIRTHDAY picture (pink border → pink text).
-        // `contain` so the whole birthday card is visible (no cropping
-        // of the balloons or "HAPPY BIRTHDAY" text), and a light 30%
-        // cream scrim over it.
-        // --demo-bg is a warm cream that matches the image edges, so
-        // the side bars from `contain` blend in instead of looking empty.
         bg: '#f6e6d8', fg: '#ff4d79',
         border: 'rgba(255,77,121,.65)', glow: 'rgba(255,77,121,.55)',
         img: 'url("/assets/chatter-birthday.png")',
@@ -405,7 +433,6 @@
         short: '5m', stamp: 'Oct 12, 2026 at 2:37 PM',
       },
       {
-        // 3 — Anniversary (confetti SVG) (lilac border → lilac text)
         bg: '#5a2fa8', fg: '#c8a2c8',
         border: 'rgba(255,255,255,.6)', glow: 'rgba(200,162,200,.65)',
         img: svgUrl(CONFETTI_SVG),
@@ -420,7 +447,6 @@
         short: '18m', stamp: 'Oct 12, 2026 at 2:24 PM',
       },
       {
-        // Red Fort — chatter WITH a photo
         bg: '#7048a8', fg: '#ffe27a',
         border: 'rgba(255,226,122,.65)', glow: 'rgba(255,226,122,.5)',
         img: null, imgOpacity: 0,
@@ -435,7 +461,6 @@
         short: '11m', stamp: 'Oct 12, 2026 at 2:31 PM',
       },
       {
-        // 4 — Hangout (graffiti SVG) (cyan border → cyan text)
         bg: '#0d3b66', fg: '#00bbff',
         border: 'rgba(95,212,255,.65)', glow: 'rgba(0,187,255,.65)',
         img: svgUrl(GRAFFITI_SVG),
@@ -450,7 +475,6 @@
         short: '26m', stamp: 'Oct 12, 2026 at 2:16 PM',
       },
       {
-        // Diwali — chatter WITH a photo
         bg: '#4a1a0a', fg: '#ff7a1a',
         border: 'rgba(255,180,100,.65)', glow: 'rgba(255,122,26,.7)',
         img: null, imgOpacity: 0,
@@ -465,7 +489,6 @@
         short: '19m', stamp: 'Oct 12, 2026 at 2:23 PM',
       },
       {
-        // 5 — Event (fireworks SVG) (orange border → orange text)
         bg: '#4a1a0a', fg: '#ff7a1a',
         border: 'rgba(255,180,100,.65)', glow: 'rgba(255,122,26,.7)',
         img: svgUrl(FIREWORKS_SVG),
@@ -480,7 +503,6 @@
         short: '1h', stamp: 'Oct 12, 2026 at 1:35 PM',
       },
       {
-        // 6 — Community (cyan border → cyan text)
         bg: '#00596b', fg: '#00bbff',
         border: 'rgba(95,212,255,.55)', glow: 'rgba(0,187,255,.5)',
         img: null, imgOpacity: 0,
@@ -495,19 +517,12 @@
       },
     ];
 
-    // The visitor picks "Without media" or "With media"; the chatter keeps
-    // cycling through different colours / themes inside the chosen group.
     var mode = 'text';
     var pool = states.filter(function (st) { return !st.media; });
     var i = 0;
     var first = true;
     var timer = null;
 
-    // The stage is locked to the height of the TALLEST chatter of the CHOSEN
-    // mode (measured on an invisible clone). While it cycles inside a mode,
-    // nothing above or below the card ever moves. "Without media" reserves no
-    // extra space for a photo; the height only changes when the visitor
-    // presses the other button.
     function tallestCardHeight() {
       var clone = demo.cloneNode(true);
       clone.removeAttribute('id');
@@ -529,24 +544,21 @@
     function syncStageHeight() {
       if (!stageEl) return;
       var h = tallestCardHeight();
-      stageEl.style.height = (h + 24) + 'px';   // 12px top + 12px bottom stage padding
+      stageEl.style.height = (h + 24) + 'px';
     }
 
     function applyState() {
       var s = pool[i];
 
-      // Colors
       demo.style.setProperty('--demo-bg', s.bg);
       demo.style.setProperty('--demo-fg', s.fg);
       demo.style.setProperty('--demo-border', s.border);
       demo.style.setProperty('--demo-glow', s.glow);
       demo.classList.toggle('is-custom', s.glow !== 'transparent');
 
-      // Background image sizing per state (photo = contain, SVGs = cover)
       demo.style.setProperty('--demo-bg-size', s.imgSize || 'cover');
       demo.style.setProperty('--demo-bg-pos',  s.imgPos  || 'center');
 
-      // Background image swap — fade out, change, fade in
       var nextImg = s.img || 'none';
       if (first) {
         demo.style.setProperty('--demo-bg-img', nextImg);
@@ -565,7 +577,6 @@
       }
       first = false;
 
-      // Content
       avatar.textContent = s.avatar;
       avatar.style.setProperty('--a1', s.a1);
       avatar.style.setProperty('--a2', s.a2);
@@ -579,7 +590,6 @@
       if (shortEl) shortEl.textContent = s.short;
       if (stampEl) stampEl.textContent = s.stamp;
 
-      // Photo (only some chatters have one)
       if (mediaEl && mediaImg) {
         if (s.media) {
           mediaImg.src = s.media.src;
@@ -607,7 +617,6 @@
     }
     startTimer();
 
-    // With / without media switch
     var toggleBtns = document.querySelectorAll('.demo-toggle__btn');
     Array.prototype.forEach.call(toggleBtns, function (btn) {
       btn.addEventListener('click', function () {
@@ -697,10 +706,6 @@
 
   /* ============================================================
      "COMING SOON" STORE BADGES -> early access page
-     The App Store / Google Play badges are not live yet, so pressing
-     one takes people to /access to join the waitlist.
-     Uses event delegation, so it works no matter when the badges are
-     rendered, and matches by class OR by the words "coming soon".
      ============================================================ */
   (function soonBadgesGoToAccess() {
     var ACCESS_URL = '/access';
@@ -712,7 +717,6 @@
       return /coming\s*soon/i.test(el.textContent || '') ? el : null;
     }
 
-    // make them look + behave like links (keyboard, tooltip, pointer)
     document.querySelectorAll('.store').forEach(function (el) {
       if (!soonBadge(el)) return;
       el.classList.add('is-soon');

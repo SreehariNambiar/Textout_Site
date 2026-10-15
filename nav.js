@@ -1,7 +1,8 @@
 /* ============================================================
    Textout:) — Navigation bar (MARKUP)
    ------------------------------------------------------------
-   Injects the site-wide <header class="nav"> into every page.
+   Injects the site-wide <header class="nav"> and the floating
+   "Early access" tab into every page.
    Load BEFORE script.js on every page:
 
        <link rel="stylesheet" href="/nav.css">
@@ -11,8 +12,9 @@
    - Active link is chosen from the current URL.
    - Home page uses in-page anchors (#home / #features).
      Every other page links back to the root (/#home, /#features).
+   - The floating early-access tab is shown/hidden by script.js.
 
-   To change LINKS or markup → edit the HTML string below.
+   To change LINKS or markup → edit the HTML strings below.
    To change how the nav LOOKS → edit /nav.css.
    ============================================================ */
 (function () {
@@ -43,7 +45,7 @@
     return '<a href="' + href + '"' + attr + '>' + label + '</a>';
   }
 
-  var HTML =
+  var HEADER =
     '<header class="nav" id="nav">' +
       '<div class="wrap nav-inner">' +
         '<a class="brand" href="/">' +
@@ -62,10 +64,19 @@
       '</div>' +
     '</header>';
 
+  var FLOAT =
+    '<a class="early-float" id="earlyFloat" href="/access" aria-label="Early access" aria-hidden="true">' +
+      '<span class="early-float__dot" aria-hidden="true"></span>' +
+      '<span class="early-float__text">Early access</span>' +
+      '<span class="early-float__arrow" aria-hidden="true">→</span>' +
+    '</a>';
+
   function inject() {
     var slot = document.querySelector('[data-navbar]');
-    if (slot) { slot.outerHTML = HTML; return; }
-    if (document.body) document.body.insertAdjacentHTML('afterbegin', HTML);
+    if (slot) slot.outerHTML = HEADER;
+    else if (document.body) document.body.insertAdjacentHTML('afterbegin', HEADER);
+
+    if (document.body) document.body.insertAdjacentHTML('beforeend', FLOAT);
   }
 
   if (document.body) inject();

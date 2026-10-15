@@ -12,6 +12,290 @@
 <link rel="icon" href="/assets/owl.png">
 <link rel="stylesheet" href="/style.css?v=3">
 <link rel="stylesheet" href="/nav.css?v=2">
+
+<!-- ============ IDEA TOGGLE (Chatter / Instant) — scoped styles ============ -->
+<style>
+  /* Triangle toggle: "The idea" on top, Chatter / Instant pills are the bottom corners */
+  .idea-tri {
+    position: relative;
+    width: min(100%, 400px);
+    aspect-ratio: 340 / 190;
+    margin: 0 auto 34px;
+  }
+  .idea-tri__shape {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    filter:
+      drop-shadow(9px 9px 10px #000)
+      drop-shadow(-5px -5px 8px rgba(255, 255, 255, .06))
+      drop-shadow(0 0 22px rgba(0, 16, 155, .55));
+  }
+  .idea-tri .idea-tri__idea {
+    position: absolute;
+    left: 50%; top: 42%;
+    transform: translateX(-50%);
+    margin: 0;
+    white-space: nowrap;
+  }
+  .idea-toggle__btn {
+    position: absolute;
+    top: 73.68%;
+    width: 31.76%; height: 17.89%;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; cursor: pointer;
+    font: inherit; font-size: .98rem; font-weight: 600; letter-spacing: .15px;
+    color: rgba(169, 169, 184, .82);
+    background: #0b0b0e;
+    border-radius: 999px;
+    box-shadow:
+      inset 4px 4px 9px #000,
+      inset -3px -3px 7px rgba(255, 255, 255, .05);
+    transition: color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .idea-toggle__btn[data-idea="chatter"] { left: 17.65%; }
+  .idea-toggle__btn[data-idea="instant"] { left: 50.59%; }
+  .idea-toggle__btn:hover { color: #fff; }
+  .idea-toggle__btn.is-active {
+    color: #fff; font-weight: 800;
+    background: linear-gradient(180deg, #1a1a20, #0f0f12);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .08),
+      4px 4px 10px #000,
+      -2px -2px 6px rgba(255, 255, 255, .05),
+      0 0 0 1px rgba(255, 122, 26, .55),
+      0 0 22px rgba(255, 122, 26, .35);
+  }
+  .idea-toggle__btn:focus-visible { outline-offset: 2px; }
+
+  /* Panels */
+  .idea-panel {
+    display: flex; flex-direction: column; align-items: center;
+    width: 100%;
+  }
+  .idea-panel[hidden] { display: none !important; }
+  .idea-panel.is-switching { animation: idea-in .45s var(--ease); }
+  @keyframes idea-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Hero: "chatter" link turns orange on hover */
+  .h1-tail-link:hover,
+  .h1-tail-link:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+    text-shadow: 0 0 22px rgba(255, 122, 26, .6), 0 0 8px rgba(255, 122, 26, .4);
+  }
+
+  /* Chatter equation: the + and = use the site's orange */
+  #panelChatter .eq-op {
+    color: var(--accent);
+    text-shadow: 0 0 22px rgba(255, 122, 26, .55), 0 0 8px rgba(255, 122, 26, .35);
+  }
+
+  /* "Instant" word: same hover + info tip as "Chatter", in cyan */
+  .eq-result-link--instant .eq-result {
+    text-shadow:
+      0 0 40px var(--glow),
+      0 0 22px rgba(0, 187, 255, .45),
+      0 0 8px rgba(0, 187, 255, .3);
+  }
+  .eq-result-link--instant:hover .eq-result,
+  .eq-result-link--instant:focus-visible .eq-result {
+    color: var(--cyan);
+    text-decoration-color: var(--cyan);
+    text-shadow:
+      0 0 46px rgba(0, 187, 255, .8),
+      0 0 24px rgba(0, 187, 255, .6),
+      0 0 10px rgba(0, 187, 255, .5);
+  }
+  .eq-result-link--instant:focus-visible {
+    outline-color: rgba(0, 187, 255, .55);
+  }
+  .eq-result-link--instant .eq-tip {
+    box-shadow: var(--raised), 0 0 0 1px rgba(0, 187, 255, .38), 0 0 28px rgba(0, 187, 255, .22);
+  }
+  .eq-result-link--instant .eq-tip::before {
+    border-top-color: rgba(0, 187, 255, .38);
+    border-left-color: rgba(0, 187, 255, .38);
+  }
+
+  /* Instant demo wrapper */
+  .inst-wrap {
+    margin: 36px auto 0;
+    width: 100%;
+    max-width: 620px;
+    display: flex; justify-content: center;
+    padding: 0 6px;
+  }
+
+  .inst-card {
+    position: relative;
+    width: min(100%, 380px);
+    text-align: left;
+    transition: opacity .35s var(--ease);
+  }
+  .inst-card.is-swap { opacity: 0; }
+
+  .inst-card__media {
+    position: relative;
+    border-radius: 30px;
+    box-shadow: var(--raised);
+  }
+  .inst-card__media > img {
+    display: block;
+    width: 100%; height: auto;
+    aspect-ratio: 5 / 8;
+    object-fit: cover; object-position: 50% 45%;
+    border-radius: 30px;
+    background: #111;
+  }
+
+  /* Invisible layer that carries the "photo" tooltip */
+  .inst-card .inst-shot {
+    position: absolute; inset: 0;
+    border-radius: 30px;
+    z-index: 1;
+    cursor: help;
+  }
+  .inst-card .inst-shot[data-tip]::after {
+    top: auto; bottom: 16px;
+    transform: translateX(-50%) translateY(4px);
+  }
+  .inst-card .inst-shot[data-tip]:hover::after,
+  .inst-card .inst-shot[data-tip].tip-active::after {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Overlay on top of the photo */
+  .inst-card__top {
+    position: absolute; z-index: 2;
+    top: 10px; left: 10px; right: 12px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 10px;
+    pointer-events: none;
+  }
+  .inst-card__top > * { pointer-events: auto; }
+
+  .inst-chip {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px 8px 8px;
+    border-radius: 20px;
+    background: rgba(22, 22, 24, .62);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .05);
+    min-width: 0;
+  }
+  .inst-card .inst-avatar {
+    flex: none;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 1rem;
+    background: linear-gradient(135deg, var(--a1, #ffb347), var(--a2, #ff6a00));
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .22);
+    cursor: help;
+  }
+  .inst-chip__text { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+  .inst-card .inst-user {
+    font-weight: 800; font-size: .98rem; line-height: 1.2; color: #fff;
+    cursor: help; align-self: flex-start;
+  }
+  .inst-to {
+    display: flex; align-items: center; gap: 8px;
+    font-size: .92rem; font-weight: 700; line-height: 1.2; color: #fff;
+    white-space: nowrap;
+  }
+  .inst-card .inst-aud, .inst-card .inst-loc {
+    display: inline-flex; align-items: center; gap: 4px; cursor: help;
+  }
+  .inst-card .inst-loc { font-weight: 600; opacity: .92; }
+  .inst-sep { width: 1px; height: 15px; background: rgba(255, 255, 255, .35); flex: none; }
+  .inst-pin { width: 13px; height: 13px; flex: none; }
+
+  .inst-top-end {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+    color: #fff; text-shadow: 0 1px 6px rgba(0, 0, 0, .7);
+    padding-top: 2px;
+  }
+  .inst-card .inst-more {
+    background: transparent; border: 0; color: inherit; padding: 0;
+    width: 26px; height: 20px; cursor: help;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .inst-more svg { width: 22px; height: 22px; }
+  .inst-card .inst-short {
+    font-size: .95rem; font-weight: 600; opacity: .82; line-height: 1.2; cursor: help;
+  }
+
+  /* Short description under the photo */
+  .inst-card__caption {
+    margin: 14px 0 0;
+    padding: 0 4px;
+    font-size: 1.05rem; font-weight: 500; line-height: 1.35;
+    color: #fff;
+    text-align: left;
+  }
+  .inst-card__caption:empty { display: none; }
+  .inst-card__caption + .inst-card__bar { margin-top: 10px; }
+
+  /* Bar under the photo */
+  .inst-card__bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 0 2px;
+    flex-wrap: nowrap;
+  }
+  .inst-pill {
+    flex: none;
+    display: inline-flex; align-items: center; gap: 11px;
+    padding: 9px 17px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    box-shadow: var(--raised-sm);
+    color: #fff;
+  }
+  .inst-card .inst-pill .like,
+  .inst-card .inst-pill .reso {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: .98rem; font-weight: 700; color: #fff;
+    cursor: help;
+  }
+  .inst-pill .like svg, .inst-pill .reso svg { width: 22px; height: 22px; display: block; }
+  .inst-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, .16); flex: none; }
+
+  .inst-meta { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+  .inst-card .inst-stamp {
+    font-size: .8rem; font-weight: 600; color: rgba(255, 255, 255, .72);
+    cursor: help; white-space: nowrap;
+  }
+  .inst-card .inst-wm {
+    width: 20px; height: 20px; object-fit: contain; opacity: .92; cursor: help; flex: none;
+  }
+
+  @media (max-width: 420px) {
+    .idea-toggle__btn { font-size: .88rem; }    .inst-chip { padding: 7px 12px 7px 7px; }
+    .inst-card .inst-avatar { width: 36px; height: 36px; }
+    .inst-card .inst-user { font-size: .92rem; }
+    .inst-to { font-size: .84rem; gap: 6px; }
+    .inst-card__bar { gap: 8px; }
+    .inst-pill { padding: 8px 14px; gap: 9px; }
+    .inst-card .inst-pill .like,
+    .inst-card .inst-pill .reso { font-size: .9rem; }
+    .inst-pill .like svg, .inst-pill .reso svg { width: 20px; height: 20px; }
+    .inst-card .inst-stamp { font-size: .7rem; }
+    .inst-card .inst-wm { width: 18px; height: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .idea-panel.is-switching { animation: none; }
+    .inst-card { transition: none; }
+    .idea-toggle__btn { transition: none; }
+  }
+</style>
+
 <script src="/nav.js?v=2" defer></script>
 <script src="/script.js?v=2" defer></script>
 </head>
@@ -102,7 +386,7 @@
             <p>Golden hour at the Taj Mahal. Worth the 5am alarm. <b class="tag">#tajmahal</b></p>
           </div>
           <div class="chatter__media">
-            <img src="/assets/chatter-taj-mahal.jpg" alt="The Taj Mahal glowing at sunset" width="848" height="1264">
+            <img src="/assets/chatter-taj-mahal.png" alt="The Taj Mahal glowing at sunset" width="848" height="1264">
           </div>
           <div class="chatter__actions">
             <span class="like"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>63</span>
@@ -133,7 +417,7 @@
             <p>Evening walk at the Red Fort. Every wall has a story. <b class="tag">#redfort</b></p>
           </div>
           <div class="chatter__media">
-            <img src="/assets/chatter-red-fort.jpg" alt="Visitors walking along the red sandstone walls of the Red Fort" width="848" height="1264">
+            <img src="/assets/chatter-red-fort.png" alt="Visitors walking along the red sandstone walls of the Red Fort" width="848" height="1264">
           </div>
           <div class="chatter__actions">
             <span class="like"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>41</span>
@@ -220,7 +504,7 @@
             <p>Rangoli done, diyas lit. Happy Diwali, everyone! 🪔 <b class="tag">#diwali</b></p>
           </div>
           <div class="chatter__media">
-            <img src="/assets/chatter-diwali.jpg" alt="A colourful Diwali rangoli surrounded by lit diyas" width="768" height="1376">
+            <img src="/assets/chatter-diwali.png" alt="A colourful Diwali rangoli surrounded by lit diyas" width="768" height="1376">
           </div>
           <div class="chatter__actions">
             <span class="like"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>98</span>
@@ -271,168 +555,309 @@
   <section class="equation" id="equation">
     <div class="wrap">
 
-      <span class="eyebrow reveal">The idea</span>
-
-      <div class="equation-line reveal" style="--d:.12s" aria-label="chat plus post equals Chatter">
-        <span class="eq-term">chat</span>
-        <span class="eq-op">+</span>
-        <span class="eq-term">post</span>
-        <span class="eq-op">=</span>
-        <a href="#features" class="eq-result-link" aria-describedby="eq-tip">
-          <span class="eq-result">Chatter</span>
-          <span id="eq-tip" class="eq-tip" role="tooltip">
-            <strong>What is a chatter?</strong>
-            <span>A post that feels like a message. Share it with everyone, your friends, a hangout, an event or a community — same ease as chatting, but it stays out there for people to see.</span>
-          </span>
-        </a>
+      <!-- ============ TRIANGLE: The idea (top) + Chatter | Instant (bottom corners) ============ -->
+      <div class="idea-tri reveal">
+        <svg class="idea-tri__shape" viewBox="0 0 340 190" aria-hidden="true" focusable="false">
+          <path d="M162.1 20.15 A10 10 0 0 1 177.9 20.15 L276.3 146.6 A17 17 0 0 1 263 174 L77 174 A17 17 0 0 1 63.7 146.6 Z" fill="#0f0f12" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-linejoin="round"/>
+        </svg>
+        <span class="eyebrow idea-tri__idea">The idea</span>
+        <div role="tablist" aria-label="Choose an idea" style="display:contents">
+          <button type="button" class="idea-toggle__btn is-active" role="tab" id="tabChatter" aria-selected="true" aria-controls="panelChatter" data-idea="chatter">Chatter</button>
+          <button type="button" class="idea-toggle__btn" role="tab" id="tabInstant" aria-selected="false" aria-controls="panelInstant" tabindex="-1" data-idea="instant">Instant</button>
+        </div>
       </div>
 
-      <p class="equation-copy reveal" style="--d:.18s">
-        <strong>Posting should feel as easy as chatting with your friends.</strong>
-      </p>
+      <!-- ============ PANEL 1: CHATTER (existing content, unchanged) ============ -->
+      <div class="idea-panel" id="panelChatter" role="tabpanel" aria-labelledby="tabChatter">
 
-      <!-- ============ LIVE CHATTER DEMO ============ -->
-      <div class="demo-wrap reveal" style="--d:.22s">
-
-        <div class="demo-toggle" role="tablist" aria-label="Chatter type">
-          <button type="button" class="demo-toggle__btn is-active" role="tab" aria-selected="true" data-mode="text">Without media</button>
-          <button type="button" class="demo-toggle__btn" role="tab" aria-selected="false" data-mode="photo">With media</button>
+        <div class="equation-line reveal" style="--d:.12s" aria-label="chat plus post equals Chatter">
+          <span class="eq-term">chat</span>
+          <span class="eq-op">+</span>
+          <span class="eq-term">post</span>
+          <span class="eq-op">=</span>
+          <a href="#features" class="eq-result-link" aria-describedby="eq-tip">
+            <span class="eq-result">Chatter</span>
+            <span id="eq-tip" class="eq-tip" role="tooltip">
+              <strong>What is a chatter?</strong>
+              <span>A post that feels like a message. Share it with everyone, your friends, a hangout, an event or a community — same ease as chatting, but it stays out there for people to see.</span>
+            </span>
+          </a>
         </div>
 
-        <div class="demo-stage">
+        <p class="equation-copy reveal" style="--d:.18s">
+          <strong>Posting should feel as easy as chatting with your friends.</strong>
+        </p>
 
-          <article class="demo-chatter" id="demoChatter">
+        <!-- ============ LIVE CHATTER DEMO ============ -->
+        <div class="demo-wrap reveal" style="--d:.22s">
 
-            <div class="demo-chatter__head">
-              <span class="demo-chatter__avatar"
-                    id="demoAvatar"
-                    style="--a1:#ffb347;--a2:#ff6a00"
-                    data-tip="Avatar — tap to open their profile">A</span>
+          <div class="demo-toggle" role="tablist" aria-label="Chatter type">
+            <button type="button" class="demo-toggle__btn is-active" role="tab" aria-selected="true" data-mode="text">Without media</button>
+            <button type="button" class="demo-toggle__btn" role="tab" aria-selected="false" data-mode="photo">With media</button>
+          </div>
 
-              <div class="demo-chatter__top">
+          <div class="demo-stage">
 
-                <div class="demo-chatter__meta">
-                  <span class="demo-chatter__user"
-                        id="demoUsername"
-                        data-tip="@username — the person who posted">@aarav</span>
-                  <span class="demo-chatter__to"
-                        data-tip="Audience — who can see this chatter">
-                    <span class="demo-chatter__to-label">sent to</span>
-                    <span class="demo-chatter__to-name" id="demoAudience">everyone</span>
-                  </span>
-                </div>
+            <article class="demo-chatter" id="demoChatter">
 
-                <div class="demo-chatter__end">
-                  <div class="demo-more-wrap">
-                    <button type="button"
-                            class="demo-chatter__more tip-above"
-                            id="demoMore"
-                            data-tip="More — share, report, delete"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <circle cx="5" cy="12" r="2"/>
-                        <circle cx="12" cy="12" r="2"/>
-                        <circle cx="19" cy="12" r="2"/>
-                      </svg>
-                    </button>
+              <div class="demo-chatter__head">
+                <span class="demo-chatter__avatar"
+                      id="demoAvatar"
+                      style="--a1:#ffb347;--a2:#ff6a00"
+                      data-tip="Avatar — tap to open their profile">A</span>
 
-                    <div class="demo-menu" id="demoMenu" role="menu" hidden>
-                      <button type="button" role="menuitem" data-action="share">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                          <polyline points="16 6 12 2 8 6"/>
-                          <line x1="12" y1="2" x2="12" y2="15"/>
-                        </svg>
-                        <span>Share chatter</span>
-                      </button>
-                      <button type="button" role="menuitem" data-action="report" class="demo-menu-danger">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
-                          <line x1="4" y1="22" x2="4" y2="15"/>
-                        </svg>
-                        <span>Report chatter</span>
-                      </button>
-                      <button type="button" role="menuitem" data-action="delete" class="demo-menu-danger">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <polyline points="3 6 5 6 21 6"/>
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                          <line x1="10" y1="11" x2="10" y2="17"/>
-                          <line x1="14" y1="11" x2="14" y2="17"/>
-                        </svg>
-                        <span>Delete chatter</span>
-                      </button>
-                    </div>
+                <div class="demo-chatter__top">
+
+                  <div class="demo-chatter__meta">
+                    <span class="demo-chatter__user"
+                          id="demoUsername"
+                          data-tip="@username — the person who posted">@aarav</span>
+                    <span class="demo-chatter__to"
+                          data-tip="Audience — who can see this chatter">
+                      <span class="demo-chatter__to-label">sent to</span>
+                      <span class="demo-chatter__to-name" id="demoAudience">everyone</span>
+                    </span>
                   </div>
 
-                  <span class="demo-chatter__shorttime"
-                        id="demoShorttime"
-                        data-tip="Relative time since it was posted">2m</span>
+                  <div class="demo-chatter__end">
+                    <div class="demo-more-wrap">
+                      <button type="button"
+                              class="demo-chatter__more tip-above"
+                              id="demoMore"
+                              data-tip="More — share, report, delete"
+                              aria-haspopup="true"
+                              aria-expanded="false">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <circle cx="5" cy="12" r="2"/>
+                          <circle cx="12" cy="12" r="2"/>
+                          <circle cx="19" cy="12" r="2"/>
+                        </svg>
+                      </button>
+
+                      <div class="demo-menu" id="demoMenu" role="menu" hidden>
+                        <button type="button" role="menuitem" data-action="share">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                            <polyline points="16 6 12 2 8 6"/>
+                            <line x1="12" y1="2" x2="12" y2="15"/>
+                          </svg>
+                          <span>Share chatter</span>
+                        </button>
+                        <button type="button" role="menuitem" data-action="report" class="demo-menu-danger">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                            <line x1="4" y1="22" x2="4" y2="15"/>
+                          </svg>
+                          <span>Report chatter</span>
+                        </button>
+                        <button type="button" role="menuitem" data-action="delete" class="demo-menu-danger">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            <line x1="10" y1="11" x2="10" y2="17"/>
+                            <line x1="14" y1="11" x2="14" y2="17"/>
+                          </svg>
+                          <span>Delete chatter</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <span class="demo-chatter__shorttime"
+                          id="demoShorttime"
+                          data-tip="Relative time since it was posted">2m</span>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="demo-chatter__body">
+                <p id="demoMessage">Sunset at the pier was <b class="tag">#unreal</b> today.</p>
+              </div>
+
+              <div class="demo-chatter__media"
+                   id="demoMedia"
+                   data-tip="Media — add one photo or video to a chatter"
+                   hidden>
+                <img id="demoMediaImg" src="/assets/chatter-taj-mahal.png" alt="" width="848" height="1264">
+              </div>
+
+              <div class="demo-chatter__actions">
+
+                <span class="like"
+                      data-tip="Like — a quick way to react">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                  <span id="demoLikeCount">24</span>
+                </span>
+
+                <span class="reso"
+                      data-tip="Resonance — a reply that stands on its own">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 2
+                             C 6.6 2 2 5.9 2 10.6
+                             C 2 12.9 3 15 4.8 16.5
+                             L 3.2 21.5
+                             L 8.1 19.3
+                             C 9.3 19.7 10.6 19.9 12 19.9
+                             C 17.4 19.9 22 16 22 11.3
+                             C 22 6.6 17.4 2 12 2 Z"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linejoin="round"
+                          stroke-linecap="round"/>
+                    <path d="M13.8 4.8 L 9 11.4 L 11.6 11.4 L 10.2 16.3 L 15 9.7 L 12.4 9.7 Z"
+                          fill="currentColor"/>
+                  </svg>
+                  <span id="demoResoCount">6</span>
+                </span>
+
+              </div>
+
+              <div class="demo-chatter__timeview">
+                <span class="demo-chatter__stamp"
+                      id="demoStamp"
+                      data-tip="Full timestamp of the post">Oct 12, 2026 at 2:42 PM</span>
+              </div>
+
+              <img class="demo-chatter__wm"
+                   src="/assets/owl.png"
+                   alt=""
+                   data-tip="Textout:) watermark">
+
+            </article>
+
+          </div>
+        </div>
+
+      </div>
+      <!-- ============ /PANEL 1 ============ -->
+
+      <!-- ============ PANEL 2: INSTANT ============ -->
+      <div class="idea-panel" id="panelInstant" role="tabpanel" aria-labelledby="tabInstant" hidden>
+
+        <div class="equation-line" aria-label="real plus authentic equals Instant">
+          <span class="eq-term">real</span>
+          <span class="eq-op">+</span>
+          <span class="eq-term">authentic</span>
+          <span class="eq-op">=</span>
+          <a href="#instants" class="eq-result-link eq-result-link--instant" aria-describedby="eq-tip-instant">
+            <span class="eq-result">Instant</span>
+            <span id="eq-tip-instant" class="eq-tip" role="tooltip">
+              <strong>What is an Instant?</strong>
+              <span>A raw, unedited photo or video taken straight from your camera. Swipe, tap, post. No filters, no editing, just the moment as it happened.</span>
+            </span>
+          </a>
+        </div>
+
+        <p class="equation-copy">
+          <strong>Swipe → Tap → Post</strong>
+        </p>
+
+        <!-- ============ LIVE INSTANT DEMO ============ -->
+        <div class="inst-wrap">
+
+          <article class="inst-card" id="instCard">
+
+            <div class="inst-card__media">
+              <img id="instImg" src="/assets/chatter-taj-mahal.png" alt="The Taj Mahal glowing at sunset" width="848" height="1264">
+
+              <span class="inst-shot"
+                    data-tip="Instant — a raw, unedited photo or video taken straight from the camera"></span>
+
+              <div class="inst-card__top">
+
+                <div class="inst-chip">
+                  <span class="inst-avatar"
+                        id="instAvatar"
+                        style="--a1:#ff6b8a;--a2:#ff2d55"
+                        data-tip="Avatar — tap to open their profile">R</span>
+                  <div class="inst-chip__text">
+                    <span class="inst-user"
+                          id="instUser"
+                          data-tip="@username — the person who captured it">@rhea</span>
+                    <span class="inst-to">
+                      <span class="inst-aud"
+                            id="instAudience"
+                            data-tip="Audience — who can see this instant">everyone</span>
+                      <span class="inst-sep" aria-hidden="true"></span>
+                      <span class="inst-loc"
+                            data-tip="Location — where it was captured">
+                        <svg class="inst-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
+                        <span id="instLoc">Agra</span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="inst-top-end">
+                  <button type="button" class="inst-more tip-above" data-tip="More — share, report, delete" aria-label="More options">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <circle cx="5" cy="12" r="2"/>
+                      <circle cx="12" cy="12" r="2"/>
+                      <circle cx="19" cy="12" r="2"/>
+                    </svg>
+                  </button>
+                  <span class="inst-short"
+                        id="instShort"
+                        data-tip="Relative time since it was captured">4m</span>
                 </div>
 
               </div>
             </div>
 
-            <div class="demo-chatter__body">
-              <p id="demoMessage">Sunset at the pier was <b class="tag">#unreal</b> today.</p>
+            <p class="inst-card__caption" id="instCaption">Golden hour</p>
+
+            <div class="inst-card__bar">
+
+              <div class="inst-pill">
+                <span class="like" data-tip="Like — a quick way to react">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                  <span id="instLikes">63</span>
+                </span>
+                <span class="inst-divider" aria-hidden="true"></span>
+                <span class="reso" data-tip="Resonance — a reply that stands on its own">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 2
+                             C 6.6 2 2 5.9 2 10.6
+                             C 2 12.9 3 15 4.8 16.5
+                             L 3.2 21.5
+                             L 8.1 19.3
+                             C 9.3 19.7 10.6 19.9 12 19.9
+                             C 17.4 19.9 22 16 22 11.3
+                             C 22 6.6 17.4 2 12 2 Z"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linejoin="round"
+                          stroke-linecap="round"/>
+                    <path d="M13.8 4.8 L 9 11.4 L 11.6 11.4 L 10.2 16.3 L 15 9.7 L 12.4 9.7 Z"
+                          fill="#00bbff"/>
+                  </svg>
+                  <span id="instReso">15</span>
+                </span>
+              </div>
+
+              <div class="inst-meta">
+                <span class="inst-stamp"
+                      id="instStamp"
+                      data-tip="Full timestamp of the instant">12 Oct 2026, 2:38 pm</span>
+                <img class="inst-wm"
+                     src="/assets/owl.png"
+                     alt=""
+                     data-tip="Textout:) watermark">
+              </div>
+
             </div>
-
-            <div class="demo-chatter__media"
-                 id="demoMedia"
-                 data-tip="Media — add one photo or video to a chatter"
-                 hidden>
-              <img id="demoMediaImg" src="/assets/chatter-taj-mahal.jpg" alt="" width="848" height="1264">
-            </div>
-
-            <div class="demo-chatter__actions">
-
-              <span class="like"
-                    data-tip="Like — a quick way to react">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-                <span id="demoLikeCount">24</span>
-              </span>
-
-              <span class="reso"
-                    data-tip="Resonance — a reply that stands on its own">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 2
-                           C 6.6 2 2 5.9 2 10.6
-                           C 2 12.9 3 15 4.8 16.5
-                           L 3.2 21.5
-                           L 8.1 19.3
-                           C 9.3 19.7 10.6 19.9 12 19.9
-                           C 17.4 19.9 22 16 22 11.3
-                           C 22 6.6 17.4 2 12 2 Z"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linejoin="round"
-                        stroke-linecap="round"/>
-                  <path d="M13.8 4.8 L 9 11.4 L 11.6 11.4 L 10.2 16.3 L 15 9.7 L 12.4 9.7 Z"
-                        fill="currentColor"/>
-                </svg>
-                <span id="demoResoCount">6</span>
-              </span>
-
-            </div>
-
-            <div class="demo-chatter__timeview">
-              <span class="demo-chatter__stamp"
-                    id="demoStamp"
-                    data-tip="Full timestamp of the post">Oct 12, 2026 at 2:42 PM</span>
-            </div>
-
-            <img class="demo-chatter__wm"
-                 src="/assets/owl.png"
-                 alt=""
-                 data-tip="Textout:) watermark">
 
           </article>
 
         </div>
       </div>
+      <!-- ============ /PANEL 2 ============ -->
 
     </div>
   </section>
@@ -663,7 +1088,7 @@
   </section>
 
   <!-- ============ INSTANTS ============ -->
-  <section class="feature alt">
+  <section class="feature alt" id="instants">
     <div class="wrap">
       <div class="copy reveal">
         <span class="eyebrow">Instants</span>
@@ -778,6 +1203,157 @@
   </div>
   <div class="footer-word" aria-hidden="true">Textout:)</div>
 </footer>
+
+<!-- ============================================================
+     IDEA TOGGLE (Chatter / Instant) + INSTANT DEMO CYCLER
+     Self-contained: only touches #panelChatter / #panelInstant /
+     #instCard and the .idea-toggle__btn buttons.
+     ============================================================ -->
+<script>
+(function () {
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.idea-toggle__btn'));
+  var panels = {
+    chatter: document.getElementById('panelChatter'),
+    instant: document.getElementById('panelInstant')
+  };
+  if (!btns.length || !panels.chatter || !panels.instant) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Instant demo data (reuses existing chatter media) ---------- */
+  var card     = document.getElementById('instCard');
+  var imgEl    = document.getElementById('instImg');
+  var avatarEl = document.getElementById('instAvatar');
+  var userEl   = document.getElementById('instUser');
+  var audEl    = document.getElementById('instAudience');
+  var locEl    = document.getElementById('instLoc');
+  var shortEl  = document.getElementById('instShort');
+  var likesEl  = document.getElementById('instLikes');
+  var resoEl   = document.getElementById('instReso');
+  var stampEl  = document.getElementById('instStamp');
+  var captionEl = document.getElementById('instCaption');
+
+  var instants = [
+    {
+      src: '/assets/chatter-taj-mahal.png', alt: 'The Taj Mahal glowing at sunset', pos: '50% 35%',
+      avatar: 'R', a1: '#ff6b8a', a2: '#ff2d55',
+      user: '@rhea', audience: 'everyone', loc: 'Agra',
+      caption: 'Golden hour',
+      short: '4m', likes: 63, reso: 15, stamp: '12 Oct 2026, 2:38 pm'
+    },
+    {
+      src: '/assets/chatter-red-fort.png', alt: 'Visitors walking along the red sandstone walls of the Red Fort', pos: '50% 45%',
+      avatar: 'A', a1: '#ffffff', a2: '#ffd9c2',
+      user: '@arjun', audience: 'friends', loc: 'Delhi',
+      short: '11m', likes: 41, reso: 12, stamp: '12 Oct 2026, 2:31 pm'
+    },
+    {
+      src: '/assets/chatter-diwali.png', alt: 'A colourful Diwali rangoli surrounded by lit diyas', pos: '50% 50%',
+      avatar: 'N', a1: '#ffd93d', a2: '#ff7a1a',
+      user: '@nisha', audience: 'everyone', loc: 'Kochi',
+      caption: 'Rangoli done',
+      short: '19m', likes: 98, reso: 27, stamp: '12 Oct 2026, 2:23 pm'
+    }
+  ];
+
+  var idx = 0;
+  var timer = null;
+  var swapTimer = null;
+
+  function paint(s) {
+    imgEl.src = s.src;
+    imgEl.alt = s.alt;
+    imgEl.style.objectPosition = s.pos;
+    avatarEl.textContent = s.avatar;
+    avatarEl.style.setProperty('--a1', s.a1);
+    avatarEl.style.setProperty('--a2', s.a2);
+    userEl.textContent = s.user;
+    audEl.textContent = s.audience;
+    locEl.textContent = s.loc;
+    shortEl.textContent = s.short;
+    likesEl.textContent = s.likes;
+    resoEl.textContent = s.reso;
+    stampEl.textContent = s.stamp;
+    if (captionEl) captionEl.textContent = s.caption || '';
+  }
+
+  function next() {
+    idx = (idx + 1) % instants.length;
+    if (reduce) { paint(instants[idx]); return; }
+    card.classList.add('is-swap');
+    clearTimeout(swapTimer);
+    swapTimer = setTimeout(function () {
+      paint(instants[idx]);
+      card.classList.remove('is-swap');
+    }, 380);
+  }
+
+  function startCycle() {
+    if (reduce) return;
+    stopCycle();
+    timer = setInterval(next, 5000);
+  }
+  function stopCycle() {
+    clearInterval(timer);
+    timer = null;
+    clearTimeout(swapTimer);
+    if (card) card.classList.remove('is-swap');
+  }
+
+  /* ---------- Toggle ---------- */
+  var current = 'chatter';
+
+  function setMode(mode, focusBtn) {
+    if (mode === current) return;
+    current = mode;
+
+    btns.forEach(function (b) {
+      var on = b.getAttribute('data-idea') === mode;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.setAttribute('tabindex', on ? '0' : '-1');
+      if (on && focusBtn) b.focus();
+    });
+
+    Object.keys(panels).forEach(function (k) {
+      var show = k === mode;
+      panels[k].hidden = !show;
+      panels[k].classList.remove('is-switching');
+      if (show) {
+        // restart the fade-in
+        void panels[k].offsetWidth;
+        if (!reduce) panels[k].classList.add('is-switching');
+      }
+    });
+
+    if (mode === 'instant') {
+      startCycle();
+    } else {
+      stopCycle();
+      // let the chatter demo re-measure itself now that it's visible again
+      requestAnimationFrame(function () {
+        window.dispatchEvent(new Event('resize'));
+      });
+    }
+  }
+
+  btns.forEach(function (btn, i) {
+    btn.addEventListener('click', function () {
+      setMode(btn.getAttribute('data-idea'), false);
+    });
+    btn.addEventListener('keydown', function (e) {
+      var to = -1;
+      if (e.key === 'ArrowRight') to = (i + 1) % btns.length;
+      else if (e.key === 'ArrowLeft') to = (i - 1 + btns.length) % btns.length;
+      else if (e.key === 'Home') to = 0;
+      else if (e.key === 'End') to = btns.length - 1;
+      if (to < 0) return;
+      e.preventDefault();
+      setMode(btns[to].getAttribute('data-idea'), true);
+    });
+  });
+})();
+</script>
 
 </body>
 </html>

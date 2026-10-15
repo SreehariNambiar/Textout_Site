@@ -1,7 +1,7 @@
 /* ============================================================
    Textout:) — Navigation bar (STYLES)
    ------------------------------------------------------------
-   Loads AFTER /style.css on every page:
+   Nav-only styles. Loads AFTER /style.css on every page:
 
        <link rel="stylesheet" href="/style.css">
        <link rel="stylesheet" href="/nav.css">
@@ -11,7 +11,8 @@
      2. Desktop links         (> 900px)
      3. Early-access highlight
      4. ▸▸▸ MOBILE NAV        (<= 900px)     ← edit for phones
-     5. Reduced motion
+     5. Floating early-access tab
+     6. Reduced motion
    ============================================================ */
 
 /* ============ 1. SHELL ============ */
@@ -108,8 +109,6 @@
               inset 0 -1px 1px rgba(0, 0, 0, .4);
 }
 
-/* nav CTA — .btn / .btn-primary live in style.css; this only
-   recolours the primary button when it sits inside the nav */
 .nav .btn-primary {
   background:
     linear-gradient(180deg, rgba(255, 122, 26, .22), rgba(255, 122, 26, .05)),
@@ -165,7 +164,6 @@
   50%      { transform: scale(.55); opacity: .55; }
 }
 
-/* tight desktop */
 @media (min-width: 901px) and (max-width: 1080px) {
   .nav-inner { gap: 12px; }
   .nav-links a { padding: 8px 13px; font-size: .85rem; }
@@ -174,19 +172,15 @@
 
 /* ============================================================
    ▸▸▸  4. MOBILE NAV  ( <= 900px )  ◂◂◂
-   Everything about the phone / tablet nav lives here.
-   Edit only this block to redesign the mobile nav.
    ============================================================ */
 
 .nav-toggle { display: none; }
 
 @media (max-width: 900px) {
 
-  /* --- shell -------------------------------------------------- */
   .nav-inner { gap: 8px; }
   .nav .btn-primary { margin-left: auto; }
 
-  /* --- burger button ----------------------------------------- */
   .nav-toggle {
     display: grid; place-items: center; flex: none;
     width: 46px; height: 46px; border-radius: 50%;
@@ -227,7 +221,6 @@
   .nav-toggle:focus { outline: none; }
   .nav-toggle:focus-visible { outline: 3px solid #4d63ff; outline-offset: 3px; }
 
-  /* --- dropdown panel ---------------------------------------- */
   .nav-links {
     position: absolute; top: calc(100% + 12px); left: 0; right: 0;
     flex-direction: column; gap: 3px; padding: 8px; border-radius: 26px;
@@ -249,7 +242,6 @@
     transition: opacity .22s var(--ease), transform .28s var(--ease), visibility 0s;
   }
 
-  /* --- link rows --------------------------------------------- */
   .nav-links a {
     display: flex; align-items: center;
     min-height: 48px; padding: 12px 18px; border-radius: 16px;
@@ -274,7 +266,6 @@
   .nav-links a.nav-early::before { left: 20px; }
   .nav-links a.nav-early.active::after { display: none; }
 
-  /* pressed state */
   .nav-links a:not(.nav-early):active {
     color: #fff;
     background: linear-gradient(180deg, #050507, #0d0d11);
@@ -282,7 +273,6 @@
   }
 }
 
-/* hover only on real hover devices */
 @media (max-width: 900px) and (hover: hover) {
   .nav-toggle:hover:not(:active) {
     box-shadow:
@@ -300,7 +290,6 @@
   }
 }
 
-/* touch devices: don't stick :hover after a tap */
 @media (max-width: 900px) and (hover: none) {
   .nav-links a:not(.active):not(.nav-early):hover {
     color: rgba(214, 214, 226, .86); background: none; box-shadow: none;
@@ -320,14 +309,139 @@
   }
 }
 
-/* tiny phones: hide the nav CTA, keep the burger */
 @media (max-width: 420px) {
   .nav .btn-sm { display: none; }
   .nav-toggle { margin-left: auto; }
 }
 
-/* ============ 5. REDUCED MOTION ============ */
+/* ============================================================
+   5. FLOATING EARLY-ACCESS TAB  (right edge of the viewport)
+   ------------------------------------------------------------
+   Slides in from the right when the source .early-cta button
+   (hero or closing) scrolls out of view — see script.js.
+
+   > 700px : horizontal pill  (dot · Early access · →)
+   <= 700px: slim vertical tab (dot on top, text reading top to
+             bottom, arrow at the bottom)
+   ============================================================ */
+.early-float {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  z-index: 45;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px 13px 18px;
+  border-radius: 999px 0 0 999px;
+
+  background:
+    linear-gradient(180deg, rgba(255, 122, 26, .38), rgba(255, 122, 26, .14)),
+    var(--surface);
+  color: #fff;
+  font-family: inherit;
+  font-size: .92rem;
+  font-weight: 700;
+  letter-spacing: .2px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .16),
+    -6px 6px 18px #000,
+    0 0 26px rgba(255, 122, 26, .42),
+    0 0 0 1px rgba(255, 122, 26, .6);
+
+  transform: translateY(-50%) translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform .45s cubic-bezier(.34, 1.4, .64, 1),
+    opacity .3s ease,
+    box-shadow .25s ease,
+    padding-right .25s ease;
+}
+
+.early-float.is-visible {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.early-float:hover,
+.early-float:focus-visible {
+  padding-right: 30px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    -8px 8px 22px #000,
+    0 0 36px rgba(255, 122, 26, .6),
+    0 0 0 1px rgba(255, 122, 26, .85);
+}
+.early-float:focus-visible {
+  outline: 3px solid #4d63ff;
+  outline-offset: 4px;
+  border-radius: 999px 0 0 999px;
+}
+
+.early-float__dot {
+  width: 8px; height: 8px; border-radius: 50%; flex: none;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent), 0 0 14px rgba(255, 122, 26, .75);
+  animation: early-float-pulse 1.8s ease-in-out infinite;
+}
+
+.early-float__arrow {
+  display: inline-block;
+  transition: transform .25s var(--ease);
+}
+.early-float:hover .early-float__arrow,
+.early-float:focus-visible .early-float__arrow {
+  transform: translateX(4px);
+}
+
+@keyframes early-float-pulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(.55); opacity: .55; }
+}
+
+/* Phones: slim vertical tab.
+   Dot on top → "Early access" reading top to bottom (E at the top,
+   last s at the bottom) → arrow at the bottom. */
+@media (max-width: 700px) {
+  .early-float {
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    width: 38px;
+    padding: 16px 0;
+    border-radius: 14px 0 0 14px;
+    font-size: .82rem;
+  }
+  .early-float__text {
+    writing-mode: vertical-rl;
+    letter-spacing: .4px;
+  }
+  .early-float__arrow { font-size: .95rem; line-height: 1; }
+  .early-float__dot { width: 7px; height: 7px; }
+
+  /* no widening on hover/tap — the tab stays slim */
+  .early-float:hover,
+  .early-float:focus-visible { padding-right: 0; }
+  .early-float:focus-visible { border-radius: 14px 0 0 14px; }
+
+  /* arrow nudges along the tab instead of sideways */
+  .early-float:hover .early-float__arrow,
+  .early-float:focus-visible .early-float__arrow {
+    transform: translateY(3px);
+  }
+}
+
+/* ============ 6. REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
-  .nav-links a.nav-early::before { animation: none; }
-  .nav-links, .nav.open .nav-links, .nav-toggle span { transition: none; }
+  .nav-links a.nav-early::before,
+  .early-float__dot { animation: none; }
+  .nav-links, .nav.open .nav-links, .nav-toggle span,
+  .early-float, .early-float__arrow { transition: none; }
 }

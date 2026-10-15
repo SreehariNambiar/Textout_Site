@@ -328,6 +328,10 @@
   position: fixed;
   right: 0;
   top: 50%;
+  /* svh = the "small" viewport height. It does NOT change when the phone's
+     address bar collapses / expands while scrolling, so the tab no longer
+     slides up or down while you scroll fast. */
+  top: 50svh;
   z-index: 45;
 
   display: inline-flex;
@@ -353,9 +357,10 @@
     0 0 26px rgba(255, 122, 26, .42),
     0 0 0 1px rgba(255, 122, 26, .6);
 
-  transform: translateY(-50%) translateX(100%);
+  transform: translate3d(100%, -50%, 0);
   opacity: 0;
   pointer-events: none;
+  will-change: transform, opacity;
   transition:
     transform .45s cubic-bezier(.34, 1.4, .64, 1),
     opacity .3s ease,
@@ -364,7 +369,7 @@
 }
 
 .early-float.is-visible {
-  transform: translateY(-50%) translateX(0);
+  transform: translate3d(0, -50%, 0);
   opacity: 1;
   pointer-events: auto;
 }

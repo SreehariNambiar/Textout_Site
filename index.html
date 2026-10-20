@@ -367,11 +367,6 @@
           </div>
         </div>
 
-        <!-- Floating chatter previews.
-             Cards take turns in two slots (left / right of the phone),
-             assigned at runtime by script.js; the pop-in / fade-out
-             animation loops forever via CSS. Some have a photo, some are text only. -->
-
         <article class="chatter chatter--left float-chatter" style="--bg:#ff7a1a;--c:#1f0f00">
           <div class="chatter__head">
             <span class="chatter__avatar" style="--a1:#ff6b8a;--a2:#ff2d55">R</span>
@@ -953,6 +948,7 @@
         <span class="eyebrow">Events</span>
         <h2>Plan it, <span class="hl">invite them</span></h2>
         <p>Create an event with a time and place, send invites in seconds, and share updates and photos while it happens using your 'event'. When it's over, it disappears. No clutter — just the memories.</p>
+        <a href="/events" class="btn btn-primary btn-sm" style="margin-top: 24px;">See events in detail &rarr;</a>
       </div>
       <div class="phone-col reveal" style="--d:.1s">
         <div class="duo">
@@ -1195,7 +1191,8 @@
       <p>Share life. Simply.</p>
     </div>
     <div class="footer-links">
-      <a href="/#features">Features</a>
+      <a href="/">Home</a>
+      <a href="/events">Events</a>
       <a href="/access">Early access</a>
       <a href="/support">Support</a>
       <a href="/privacy">Privacy Policy</a>
@@ -1211,8 +1208,6 @@
 
 <!-- ============================================================
      IDEA TOGGLE (Chatter / Instant) + INSTANT DEMO CYCLER
-     Self-contained: only touches #panelChatter / #panelInstant /
-     #instCard and the .idea-toggle__btn buttons.
      ============================================================ -->
 <script>
 (function () {
@@ -1225,7 +1220,6 @@
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- Instant demo data (reuses existing chatter media) ---------- */
   var card     = document.getElementById('instCard');
   var imgEl    = document.getElementById('instImg');
   var avatarEl = document.getElementById('instAvatar');
@@ -1305,7 +1299,6 @@
     if (card) card.classList.remove('is-swap');
   }
 
-  /* ---------- Toggle ---------- */
   var current = 'chatter';
 
   function setMode(mode, focusBtn) {
@@ -1325,7 +1318,6 @@
       panels[k].hidden = !show;
       panels[k].classList.remove('is-switching');
       if (show) {
-        // restart the fade-in
         void panels[k].offsetWidth;
         if (!reduce) panels[k].classList.add('is-switching');
       }
@@ -1335,7 +1327,6 @@
       startCycle();
     } else {
       stopCycle();
-      // let the chatter demo re-measure itself now that it's visible again
       requestAnimationFrame(function () {
         window.dispatchEvent(new Event('resize'));
       });

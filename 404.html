@@ -12,13 +12,28 @@
 <link rel="stylesheet" href="/event.css?v=1">
 <script src="/nav.js?v=2" defer></script>
 <script src="/script.js?v=2" defer></script>
-<script src="/event.js?v=1" defer></script>
 </head>
 <body>
 
 <main class="ev">
   <div class="ev-wrap" id="eventRoot"></div>
 </main>
+
+<!-- This page is the host's fallback for any unknown URL.
+     /hangout/<id> -> hangout.js (renders into #hangoutRoot)
+     everything else (/event/<id>, real 404s) -> event.js, exactly as before. -->
+<script>
+(function () {
+  var s = document.createElement('script');
+  if (/^\/hangout(\/|$)/.test(location.pathname)) {
+    document.getElementById('eventRoot').id = 'hangoutRoot';
+    s.src = '/hangout.js?v=1';
+  } else {
+    s.src = '/event.js?v=1';
+  }
+  document.body.appendChild(s);
+})();
+</script>
 
 <footer>
   <div class="ribbon" aria-hidden="true">

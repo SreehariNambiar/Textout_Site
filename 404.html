@@ -20,14 +20,19 @@
 </main>
 
 <!-- This page is the host's fallback for any unknown URL.
-     /hangout/<id> -> hangout.js (renders into #hangoutRoot)
+     /hangout/<id>   -> hangout.js   (renders into #hangoutRoot)
+     /community/<id> -> community.js (renders into #communityRoot)
      everything else (/event/<id>, real 404s) -> event.js, exactly as before. -->
 <script>
 (function () {
   var s = document.createElement('script');
+  var root = document.getElementById('eventRoot');
   if (/^\/hangout(\/|$)/.test(location.pathname)) {
-    document.getElementById('eventRoot').id = 'hangoutRoot';
+    root.id = 'hangoutRoot';
     s.src = '/hangout.js?v=1';
+  } else if (/^\/community(\/|$)/.test(location.pathname)) {
+    root.id = 'communityRoot';
+    s.src = '/community.js?v=1';
   } else {
     s.src = '/event.js?v=1';
   }

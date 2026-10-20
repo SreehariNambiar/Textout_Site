@@ -1,8 +1,8 @@
 /* Textout:) — public event page (textout.in/event/<share_id>) */
 (function () {
   // ── fill these two in (same values you use in contact.js / early-access.js) ──
-  var SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co';
-  var SUPABASE_KEY = 'YOUR-ANON-OR-PUBLISHABLE-KEY';
+  var SUPABASE_URL = 'https://ixnfdzkbpezsdvormutu.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml4bmZkemticGV6c2R2b3JtdXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3OTc1OTEsImV4cCI6MjA2NDM3MzU5MX0.0orXcX-Y8nHaVKIXfpePSVKBXzkkniGi4h6EBOuqWLQ';
 
   var STORE_IOS = 'https://testflight.apple.com/join/efDcTRTD';
   var STORE_ANDROID = 'https://play.google.com/store/apps/details?id=com.sreehari.chattering';

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>Delete Your Account | Orbathon</title>
+<meta name="description" content="How to delete your Orbathon account and data: in the game under Settings, or by email to Pixelera Technologies LLP. What is deleted and what is kept.">
+<meta name="theme-color" content="#041416">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://www.textout.in/orbathon/delete">
+<meta property="og:title" content="Delete your Orbathon account">
+<meta property="og:description" content="How to delete your Orbathon account and data, and what is deleted or kept.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.textout.in/orbathon/delete">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23061f21'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%238ff5dc' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap">
+<style>
+  /* Orbathon palette, copied from the game (theme.ts) */
+  :root {
+    --bg-top: #041416;
+    --bg-bottom: #0d3a3c;
+    --ink: #d9fff6;
+    --teal: #8ff5dc;
+    --teal-rgb: 143, 245, 220;
+    --gold: #ffe9a8;
+    --muted: #a9c9c4;
+    --dark: #06191c;
+    --neb-rgb: 60, 200, 190;
+    --ribbon: rgb(72, 123, 110);
+    --ribbon-top: rgb(89, 152, 136);
+    --ribbon-bottom: rgb(49, 83, 75);
+    --ribbon-tail: rgb(43, 74, 66);
+    --brand: 'Audiowide', 'Trebuchet MS', system-ui, sans-serif;
+    --title: Georgia, 'Times New Roman', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: clip;
+    color: var(--muted);
+    font: 16px/1.7 system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-top);
+    background-image: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+    background-attachment: fixed;
+  }
+
+  /* The soft clouds and dust of the default "Deep" background */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(60vmax 40vmax at 12% 8%, rgba(var(--neb-rgb), 0.17), transparent 70%),
+      radial-gradient(55vmax 38vmax at 92% 46%, rgba(var(--neb-rgb), 0.12), transparent 70%),
+      radial-gradient(50vmax 36vmax at 30% 100%, rgba(var(--neb-rgb), 0.14), transparent 70%);
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.55;
+    background-image:
+      radial-gradient(1.5px 1.5px at 8% 14%, rgba(217, 255, 246, 0.9), transparent),
+      radial-gradient(1px 1px at 22% 62%, rgba(217, 255, 246, 0.7), transparent),
+      radial-gradient(1.5px 1.5px at 37% 28%, rgba(143, 245, 220, 0.8), transparent),
+      radial-gradient(1px 1px at 51% 81%, rgba(217, 255, 246, 0.6), transparent),
+      radial-gradient(1.5px 1.5px at 66% 17%, rgba(217, 255, 246, 0.8), transparent),
+      radial-gradient(1px 1px at 79% 70%, rgba(143, 245, 220, 0.7), transparent),
+      radial-gradient(1.5px 1.5px at 91% 33%, rgba(217, 255, 246, 0.8), transparent),
+      radial-gradient(1px 1px at 14% 90%, rgba(217, 255, 246, 0.6), transparent),
+      radial-gradient(1px 1px at 58% 46%, rgba(143, 245, 220, 0.6), transparent),
+      radial-gradient(1px 1px at 96% 92%, rgba(217, 255, 246, 0.7), transparent);
+  }
+
+  .skip {
+    position: absolute; left: 12px; top: -60px; z-index: 10;
+    padding: 10px 16px; border-radius: 999px;
+    background: var(--teal); color: var(--dark); font-weight: 700; text-decoration: none;
+  }
+  .skip:focus { top: 12px; }
+
+  a { color: var(--teal); text-underline-offset: 3px; }
+  a:hover { color: var(--gold); }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+  .stage {
+    position: relative; z-index: 1;
+    max-width: 780px; margin: 0 auto;
+    padding: 28px 16px 56px;
+  }
+
+  /* The player's bubble: ring, glow and the white centre dot */
+  .bubble {
+    position: relative; width: 84px; height: 84px; margin: 6px auto 0;
+    border-radius: 50%;
+    border: 3px solid rgba(var(--teal-rgb), 0.85);
+    background: radial-gradient(circle at 35% 30%, rgba(var(--teal-rgb), 0.3), rgba(var(--teal-rgb), 0.08) 70%);
+    box-shadow: 0 0 34px rgba(var(--teal-rgb), 0.45), inset 0 0 22px rgba(var(--teal-rgb), 0.25);
+    animation: bob 4.5s ease-in-out infinite;
+  }
+  .bubble::after {
+    content: ''; position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+    border-radius: 50%; background: #fff; box-shadow: 0 0 14px 3px rgba(255, 255, 255, 0.85);
+  }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+
+  /* Glass panel, like the end-of-run panel in the game */
+  .panel {
+    position: relative;
+    margin-top: 54px;
+    padding: 62px 20px 28px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(var(--teal-rgb), 0.3);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  .ribbon { position: absolute; left: -3%; right: -3%; top: -32px; height: 64px; pointer-events: none; }
+  .ribbon-band {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    background: var(--ribbon);
+    border-top: 2px solid var(--ribbon-top);
+    border-bottom: 5px solid var(--ribbon-bottom);
+  }
+  .ribbon-tail { position: absolute; top: 16px; width: 40px; height: 56px; border-radius: 6px; background: var(--ribbon-tail); z-index: 1; }
+  .ribbon-tail.l { left: 0; transform: translateX(-16px) rotate(-6deg); }
+  .ribbon-tail.r { right: 0; transform: translateX(16px) rotate(6deg); }
+  .ribbon-text {
+    color: var(--gold); font: 20px/1 var(--brand); letter-spacing: 3px; text-transform: uppercase;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.55);
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--gold);
+    font: 900 32px/1.15 var(--title);
+    text-align: center;
+    text-shadow: 0 3px 0 rgba(0, 0, 0, 0.55);
+  }
+  .updated { margin: 12px 0 0; text-align: center; font-size: 14px; opacity: 0.85; }
+  .intro { margin: 22px 0 0; text-align: center; }
+
+  /* "The short version" box */
+  .short {
+    margin-top: 26px; padding: 18px 18px 8px;
+    border-radius: 20px;
+    background: rgba(6, 25, 28, 0.55);
+    border: 1px solid rgba(var(--teal-rgb), 0.3);
+  }
+  .tag { margin: 0 0 10px; color: var(--gold); font: 14px/1 var(--brand); letter-spacing: 3px; text-transform: uppercase; }
+  ul { margin: 0 0 14px; padding: 0; list-style: none; }
+  li { position: relative; margin: 0 0 8px; padding-left: 24px; }
+  li::before {
+    content: ''; position: absolute; left: 2px; top: 0.62em; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--teal); box-shadow: 0 0 8px rgba(var(--teal-rgb), 0.7);
+  }
+
+  /* Contents (collapsible, no script needed) */
+  details.toc { margin-top: 18px; border-radius: 20px; border: 1px solid rgba(var(--teal-rgb), 0.3); background: rgba(6, 25, 28, 0.5); }
+  details.toc summary {
+    cursor: pointer; padding: 14px 18px; list-style: none;
+    color: var(--teal); font-weight: 700; display: flex; align-items: center; justify-content: space-between;
+  }
+  details.toc summary::-webkit-details-marker { display: none; }
+  details.toc summary::after { content: '+'; font: 22px/1 var(--brand); color: var(--gold); }
+  details.toc[open] summary::after { content: '\2212'; }
+  .toc-grid { display: grid; grid-template-columns: 1fr; gap: 4px 18px; padding: 0 18px 16px; }
+  .toc-grid a { display: block; padding: 5px 0; font-size: 15px; text-decoration: none; color: var(--muted); }
+  .toc-grid a b { display: inline-block; min-width: 26px; color: var(--teal); font: 14px/1 var(--brand); }
+  .toc-grid a:hover { color: var(--gold); }
+
+  section { margin-top: 34px; padding-top: 28px; border-top: 1px solid rgba(var(--teal-rgb), 0.16); scroll-margin-top: 14px; }
+  section:first-of-type { border-top: 0; }
+  h2 {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 12px;
+    color: var(--gold);
+    font: 900 22px/1.25 var(--title);
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+  }
+  .num {
+    flex: none; display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 2px solid rgba(var(--teal-rgb), 0.85);
+    background: rgba(var(--teal-rgb), 0.1);
+    box-shadow: 0 0 12px rgba(var(--teal-rgb), 0.3);
+    color: var(--teal); font: 14px/1 var(--brand); text-shadow: none;
+  }
+  p { margin: 0 0 12px; }
+  strong { color: var(--ink); }
+
+  /* Contact card with the chunky 3D button */
+  .contact {
+    margin-top: 38px; padding: 26px 20px 22px; text-align: center;
+    border-radius: 24px; background: rgba(6, 25, 28, 0.55); border: 1px solid rgba(var(--teal-rgb), 0.3);
+  }
+  .contact h2 { justify-content: center; }
+  .cta { position: relative; display: inline-block; width: 220px; height: 66px; margin-top: 8px; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+  .cta .lip { position: absolute; left: 0; top: 6px; width: 220px; height: 60px; border-radius: 30px; background: rgba(0, 0, 0, 0.5); }
+  .cta .face {
+    position: absolute; left: 0; top: 0; width: 220px; height: 60px; border-radius: 30px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--teal); border: 3px solid rgba(255, 255, 255, 0.85);
+    color: var(--dark); font: 22px/1 var(--brand); letter-spacing: 3px;
+    transition: transform 0.08s ease;
+  }
+  .cta .face::before { content: ''; position: absolute; top: 4px; left: 28px; right: 28px; height: 16px; border-radius: 8px; background: rgba(255, 255, 255, 0.38); }
+  .cta:active .face { transform: translateY(5px); }
+  .cta:hover { color: var(--dark); }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 22px; }
+  .chip {
+    display: inline-block; padding: 9px 18px; border-radius: 999px; text-decoration: none;
+    border: 1px solid rgba(var(--teal-rgb), 0.4); background: rgba(6, 25, 28, 0.5);
+    color: var(--teal); font-size: 15px; font-weight: 700;
+  }
+  .chip:hover { color: var(--gold); border-color: rgba(255, 233, 168, 0.6); }
+
+  footer { margin-top: 30px; text-align: center; font-size: 13px; opacity: 0.75; }
+  footer b { color: var(--teal); font: 13px/1 var(--brand); letter-spacing: 2px; }
+
+  @media (min-width: 640px) {
+    .stage { padding-top: 40px; }
+    .panel { padding: 66px 40px 36px; }
+    h1 { font-size: 40px; }
+    h2 { font-size: 24px; }
+    .toc-grid { grid-template-columns: 1fr 1fr; }
+    .ribbon-text { font-size: 24px; letter-spacing: 4px; }
+  }
+  @media (max-width: 380px) {
+    .ribbon-text { font-size: 17px; letter-spacing: 2px; }
+    h1 { font-size: 28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .bubble { animation: none; }
+    .cta .face { transition: none; }
+  }
+
+  /* Numbered steps for the delete page */
+  ol.steps { margin: 0 0 14px; padding: 0; list-style: none; counter-reset: step; }
+  ol.steps li { counter-increment: step; margin: 0 0 14px; padding-left: 46px; min-height: 34px; }
+  ol.steps li::before {
+    content: counter(step); left: 0; top: 0; width: 34px; height: 34px; margin: 0;
+    display: flex; align-items: center; justify-content: center; border-radius: 50%;
+    border: 2px solid rgba(var(--teal-rgb), 0.85); background: rgba(var(--teal-rgb), 0.1);
+    box-shadow: 0 0 12px rgba(var(--teal-rgb), 0.3);
+    color: var(--teal); font: 14px/1 var(--brand);
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#steps">Skip to the steps</a>
+
+<main class="stage" id="top">
+  <div class="bubble" aria-hidden="true"></div>
+
+  <article class="panel">
+    <div class="ribbon" aria-hidden="true">
+      <span class="ribbon-tail l"></span>
+      <span class="ribbon-tail r"></span>
+      <div class="ribbon-band"><span class="ribbon-text">Orbathon</span></div>
+    </div>
+
+    <h1>Delete Your Account</h1>
+    <p class="updated">Pixelera Technologies LLP &middot; Last updated November 13, 2026</p>
+    <p class="intro">How to ask us to delete your <strong>Orbathon</strong> account and the data linked to it.</p>
+
+    <section id="steps">
+      <h2><span class="num">1</span>How to request deletion</h2>
+
+      <p><strong>Option A: in the game (fastest).</strong></p>
+      <ol class="steps">
+        <li>Open <strong>Orbathon</strong> and sign in to the account you want to delete.</li>
+        <li>Go to <strong>Settings &rarr; Delete account</strong>.</li>
+        <li>Confirm. Your account and its data are permanently removed from our servers.</li>
+      </ol>
+
+      <p><strong>Option B: by email</strong>, if you are a guest or can&rsquo;t open the game.</p>
+      <ol class="steps">
+        <li>Email <a href="mailto:pixeleratech@gmail.com?subject=Delete%20my%20data">pixeleratech@gmail.com</a> with the subject <strong>&ldquo;Delete my data&rdquo;</strong>.</li>
+        <li>Send it from the email address linked to your Google or Apple sign-in. If you play as a guest, include your player name instead.</li>
+        <li>We will act on your request within <strong>30 days</strong> and confirm by email.</li>
+      </ol>
+    </section>
+
+    <section id="deleted">
+      <h2><span class="num">2</span>What we delete</h2>
+      <ul>
+        <li>Your account and sign-in details (Google or Apple account ID, and the name and email address we received).</li>
+        <li>Guest accounts: the anonymous ID and everything linked to it.</li>
+        <li>Your player name.</li>
+        <li>Your leaderboard entry: best score, best run time and the run details sent to us.</li>
+        <li>The record of which shop items you have tried.</li>
+      </ul>
+    </section>
+
+    <section id="kept">
+      <h2><span class="num">3</span>What is kept, and for how long</h2>
+      <ul>
+        <li><strong>Server logs</strong> (such as IP address, request time and account ID) used for security and fair play are kept only for a limited time and then removed. They are not used for anything else.</li>
+        <li><strong>Purchase records</strong> are held by Apple or Google, who process payments, under their own policies. We never receive your card or bank details.</li>
+        <li><strong>Data we must keep by law</strong>, if any, is kept only for the period the law requires.</li>
+      </ul>
+    </section>
+
+    <section id="device">
+      <h2><span class="num">4</span>Good to know</h2>
+      <ul>
+        <li>Deletion is <strong>permanent</strong> and can&rsquo;t be undone. Coins and unlocked items are not refunded.</li>
+        <li>Coins, unlocks and settings saved on your own device are removed when you uninstall the game or clear its data.</li>
+        <li>You can also delete only some of your data. Email us and tell us what you would like removed.</li>
+      </ul>
+      <p>For everything we collect and why, read our <a href="/orbathon/privacy/">Privacy Policy</a>.</p>
+    </section>
+
+    <div class="contact">
+      <h2>Need a hand?</h2>
+      <p>Write to us and we will help with your request.</p>
+      <a class="cta" href="mailto:pixeleratech@gmail.com?subject=Delete%20my%20data" aria-label="Email us to delete your Orbathon account">
+        <span class="lip"></span><span class="face">EMAIL US</span>
+      </a>
+      <div class="chips">
+        <a class="chip" href="/orbathon/privacy/">Privacy Policy</a>
+        <a class="chip" href="/orbathon/terms/">Terms of Service</a>
+      </div>
+    </div>
+  </article>
+
+  <footer>&copy; 2026 Pixelera Technologies LLP &middot; <b>ORBATHON</b></footer>
+</main>
+</body>
+</html>
